@@ -1,5 +1,8 @@
         document.addEventListener('DOMContentLoaded', () => {
-
+            // const role = "colaborador"; // o dinámico
+            if (role !== "admin") {
+                document.querySelector(".gradiente-select").disabled = true;
+            }
             // 1. Textos del formulario físico para el Modal
             const descripciones = {
                 p1: {

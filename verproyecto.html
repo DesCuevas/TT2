@@ -247,31 +247,35 @@
 
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <div class="visualizer-protocol-card">
+                                <div class="visualizer-protocol-card" data-protocol="1">
                                     <span>Protocolo 1</span>
                                     <i class="fas fa-arrow-right visualizer-protocol-icon"></i>
                                 </div>
                             </div>
+
                             <div class="col-md-6">
-                                <div class="visualizer-protocol-card">
+                                <div class="visualizer-protocol-card" data-protocol="2">
                                     <span>Protocolo 2</span>
                                     <i class="fas fa-arrow-right visualizer-protocol-icon"></i>
                                 </div>
                             </div>
+
                             <div class="col-md-6">
-                                <div class="visualizer-protocol-card">
+                                <div class="visualizer-protocol-card" data-protocol="3">
                                     <span>Protocolo 3</span>
                                     <i class="fas fa-arrow-right visualizer-protocol-icon"></i>
                                 </div>
                             </div>
+
                             <div class="col-md-6">
-                                <div class="visualizer-protocol-card">
+                                <div class="visualizer-protocol-card" data-protocol="4">
                                     <span>Protocolo 4</span>
                                     <i class="fas fa-arrow-right visualizer-protocol-icon"></i>
                                 </div>
                             </div>
+
                             <div class="col-12">
-                                <div class="visualizer-protocol-card justify-content-center gap-3">
+                                <div class="visualizer-protocol-card justify-content-center gap-3" data-protocol="5">
                                     <span>Protocolo 5</span>
                                     <i class="fas fa-arrow-right visualizer-protocol-icon"></i>
                                 </div>
@@ -325,11 +329,55 @@
         </div>
     </div>
 
+<div class="modal fade" id="protocolModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content index-modal-content p-4">
+            <div class="modal-body text-center">
+                
+                <h3 class="index-modal-title mb-2">Protocolo no disponible</h3>
+                
+                <p class="text small mb-4">
+                    Este protocolo aún no ha sido llenado.<br>
+                    Descarga nuestra aplicación para completarlo.
+                </p>
 
+                <!-- QR -->
+                <img src="img/qr.png" alt="QR App" style="width:150px;">
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="roles.js"></script>
-    <script src="visualizarProyecto.js"></script>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="protocolModal1" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content index-modal-content p-4">
+            <div class="modal-body text-center">
+
+                <h3 class="index-modal-title mb-2">Protocolo no disponible</h3>
+
+                <p class="text small mb-4">
+                    Este protocolo aún no ha sido llenado.<br>
+                    Descarga nuestra aplicación para completarlo.
+                </p>
+
+                <img src="img/qr.png" alt="QR App" style="width:180px;">
+<!-- Verificar si esto lo podrán hacer todos o solo admin -->
+                <p class="text mb-4" id="textp1" data-role="admin">
+                    O llénalo manualmente aquí:
+                </p>
+
+                <a class="btn-llenar-protocolo1" href="llenarprotocolo1.html" data-role="admin">Llenar Protocolo 1</a>
+                
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="roles.js"></script>
+<script src="visualizarProyecto.js"></script>
 </body>
 
 </html>
