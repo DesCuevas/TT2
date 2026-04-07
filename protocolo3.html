@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Bug - Protocolo 3</title>
+
+    <script src="head-loader.js"></script>
+    <link rel="stylesheet" href="css/inicio.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/protocolotres.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css">
+</head>
+
+<body>
+
+  <div class="sidebar d-flex flex-column">
+        <div class="sidebar-brand">
+            <img src="img/logo-png.png" alt="Deep Bug Logo" class="brand-logo">
+            <span class="brand-text">Deep Bug</span>
+        </div>
+
+        <nav class="nav flex-column mt-4">
+            <a class="nav-link active" href="inicio.html" data-role="admin colaborador">
+                <i class="fas fa-folder"></i> Mis Proyectos
+            </a>
+            <a class="nav-link" href="consultas.html" data-role="admin colaborador">
+                <i class="fas fa-search"></i> Consultas
+            </a>
+            <a class="nav-link" href="familias.html" data-role="admin">
+                <i class="fas fa-layer-group"></i> Familias
+            </a>
+            <a class="nav-link" href="zonas.html" data-role="admin">
+                <i class="fas fa-map-marked-alt"></i> Zonas
+            </a>
+            <a class="nav-link" href="navHub.html" data-role="admin">
+                <i class="fas fa-compass"></i> navHub
+            </a>
+        </nav>
+    </div>
+
+
+    <div class="main-content">
+
+        <div class="top-header">
+            <div>
+                <h4 class="mb-0 text-primary fw-bold">Protocolo 3</h4>
+                <small class="text-primary fw-bold">Caracterización del hábitat</small>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="dropdown">
+                    <button class="btn d-flex align-items-center gap-2 p-0 border-0 bg-transparent" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle fa-lg text-primary"></i>
+                        <span class="fw-bold text-dark">Usuario</span>
+                        <i class="fas fa-chevron-down text-primary"></i>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="perfil.html"><i
+                                    class="fas fa-user-edit fa-lg text-primary me-2"></i>Mi perfil</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="login.html"><i
+                                    class="fas fa-door-closed fa-lg text-primary me-2"></i>Cerrar sesión</a></li>
+                    </ul>
+                </div>
+                <!-- Cambiar para que se actualice el usuario automaticamente y cierre sesion funcional-->
+            </div>
+        </div>
+
+        <div class="container-fluid px-0 mt-4">
+
+            <div class="row align-items-center mb-4">
+                <div class="col-md-4">
+                    <div class="position-relative d-inline-block">
+                        <select class="gradiente-select pe-4"
+                            style="appearance: none; -webkit-appearance: none; -moz-appearance: none; background: transparent; cursor: pointer;">
+                            <option>Gradiente Alto</option>
+                            <option>Gradiente Bajo</option>
+                        </select>
+                        <i class="fas fa-chevron-down text-primary position-absolute"
+                            style="right: 5px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
+                    </div>
+                </div>
+
+                <div class="col-md-8 d-flex justify-content-end align-items-center gap-3">
+                    <!-- <button class="btn btn-guardar-pdf shadow-sm mb-0">
+                        <i class="fas fa-file-pdf me-2"></i> Guardar PDF
+                    </button> -->
+                    <button id="btnModificarParametros" class="btn btn-modificar text-white fw-bold shadow-sm"
+                        data-role="admin">
+                        <i class="fas fa-edit me-2"></i> Modificar puntajes
+                    </button>
+
+
+
+                    <div id="badgeTotal" class="badge-total shadow-sm mb-0">
+                        Total de calidad del hábitat: <span id="totalScore">0</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="habitat-table">
+
+                <div class="table-header-row row align-items-center mx-0 shadow-sm">
+                    <div class="col-5 text-start">Parametro</div>
+                    <div class="col-2">Puntaje</div>
+                    <div class="col-2">Nivel</div>
+                    <div class="col-3">Acciones</div>
+                </div>
+
+                <div class="parameter-row row mx-0" data-param="p1">
+                    <div class="col-5 parameter-name">1. Heterogeneidad y estabilidad del sustrato disponible</div>
+                    <div class="col-2"><input type="number" class="score-input form-control mx-auto" value="20" min="0"
+                            max="20" disabled></div>
+                    <div class="col-2 level-text">ÓPTIMO</div>
+                    <div class="col-3"><button class="btn btn-detalle shadow-sm">Detalla del nivel</button></div>
+                </div>
+
+                <div class="parameter-row row mx-0" data-param="p2">
+                    <div class="col-5 parameter-name">2. Empotramiento del sustrato</div>
+                    <div class="col-2"><input type="number" class="score-input form-control mx-auto" value="20" min="0"
+                            max="20" disabled></div>
+                    <div class="col-2 level-text">ÓPTIMO</div>
+                    <div class="col-3"><button class="btn btn-detalle shadow-sm">Detalla del nivel</button></div>
+                </div>
+
+                <div class="parameter-row row mx-0" data-param="p3">
+                    <div class="col-5 parameter-name">3. Relación profundidad y velocidad</div>
+                    <div class="col-2"><input type="number" class="score-input form-control mx-auto" value="20" min="0"
+                            max="20" disabled></div>
+                    <div class="col-2 level-text">ÓPTIMO</div>
+                    <div class="col-3"><button class="btn btn-detalle shadow-sm">Detalla del nivel</button></div>
+                </div>
+
+                <div class="parameter-row row mx-0" data-param="p4">
+                    <div class="col-5 parameter-name">4. Deposición de sedimentos</div>
+                    <div class="col-2"><input type="number" class="score-input form-control mx-auto" value="20" min="0"
+                            max="20" disabled></div>
+                    <div class="col-2 level-text">ÓPTIMO</div>
+                    <div class="col-3"><button class="btn btn-detalle shadow-sm">Detalla del nivel</button></div>
+                </div>
+
+                <div class="parameter-row row mx-0" data-param="p5">
+                    <div class="col-5 parameter-name">5. Estado del flujo del cauce</div>
+                    <div class="col-2"><input type="number" class="score-input form-control mx-auto" value="20" min="0"
+                            max="20" disabled></div>
+                    <div class="col-2 level-text">ÓPTIMO</div>
+                    <div class="col-3"><button class="btn btn-detalle shadow-sm">Detalla del nivel</button></div>
+                </div>
+
+                <div class="parameter-row row mx-0" data-param="p6">
+                    <div class="col-5 parameter-name">6. Alteración del cauce</div>
+                    <div class="col-2"><input type="number" class="score-input form-control mx-auto" value="20" min="0"
+                            max="20" disabled></div>
+                    <div class="col-2 level-text">ÓPTIMO</div>
+                    <div class="col-3"><button class="btn btn-detalle shadow-sm">Detalla del nivel</button></div>
+                </div>
+
+                <div class="parameter-row row mx-0" data-param="p7">
+                    <div class="col-5 parameter-name">7. Frecuencia de rápidos</div>
+                    <div class="col-2"><input type="number" class="score-input form-control mx-auto" value="20" min="0"
+                            max="20" disabled></div>
+                    <div class="col-2 level-text">ÓPTIMO</div>
+                    <div class="col-3"><button class="btn btn-detalle shadow-sm">Detalla del nivel</button></div>
+                </div>
+
+                <div class="parameter-row row mx-0" data-param="p8">
+                    <div class="col-5 parameter-name">8. Estabilidad de la ribera</div>
+                    <div class="col-2"><input type="number" class="score-input form-control mx-auto" value="20" min="0"
+                            max="20" disabled></div>
+                    <div class="col-2 level-text">ÓPTIMO</div>
+                    <div class="col-3"><button class="btn btn-detalle shadow-sm">Detalla del nivel</button></div>
+                </div>
+
+                <div class="parameter-row row mx-0" data-param="p9">
+                    <div class="col-5 parameter-name">9. Vegetación protectora de la ribera</div>
+                    <div class="col-2"><input type="number" class="score-input form-control mx-auto" value="20" min="0"
+                            max="20" disabled></div>
+                    <div class="col-2 level-text">ÓPTIMO</div>
+                    <div class="col-3"><button class="btn btn-detalle shadow-sm">Detalla del nivel</button></div>
+                </div>
+
+                <div class="parameter-row row mx-0" data-param="p10">
+                    <div class="col-5 parameter-name">10. Amplitud de la vegetación ribereña</div>
+                    <div class="col-2"><input type="number" class="score-input form-control mx-auto" value="20" min="0"
+                            max="20" disabled></div>
+                    <div class="col-2 level-text">ÓPTIMO</div>
+                    <div class="col-3"><button class="btn btn-detalle shadow-sm">Detalla del nivel</button></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalDetalle" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center shadow">
+                <div class="modal-body">
+                    <h2 id="modalNivelTitulo">ÓPTIMO</h2>
+                    <p id="modalDescripcion">Más de 70% de sustrato es estable y puede ser colonizado por la epifauna.
+                        El tramo presenta una mezcla de piedras, troncos sumergidos o superficiales o cualquier otro
+                        sustrato estable.</p>
+                    <button type="button" class="btn btn-aceptar-modal shadow-sm mt-2"
+                        data-bs-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="roles.js"></script>
+    <script src="protocolo3.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
