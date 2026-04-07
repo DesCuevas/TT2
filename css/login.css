@@ -153,6 +153,7 @@ body{
             margin-bottom: 20px;
             transition: background-color 0.3s;
             box-shadow: 0 4px 10px rgba(33, 150, 243, 0.3);
+            text-decoration: none;
         }
         .login-btn-primary:hover {
             background-color: #1976D2;
