@@ -147,11 +147,13 @@
 .measurement-grid .header {
     font-weight: bold;
     text-align: center;
+    font-size: small;
 }
 
 .measurement-grid .row-label {
     font-weight: bold;
     text-align: center;
+    font-size: small;
 }
 
 .measurement-grid input {
@@ -163,4 +165,5 @@
 .measurement-block h6 {
     font-weight: bold;
     margin-bottom: 10px;
+    font-size: medium;
 }
