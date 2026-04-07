@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deep Bug - Protocolo 2</title>
+    <title>Protocolo 2</title>
 
     <script src="head-loader.js"></script>
     <link rel="stylesheet" href="css/inicio.css">
@@ -77,11 +77,17 @@
             <div class="col-lg-5 mb-4">
 
                 <div class="card border-0 shadow-sm mb-3">
-                    <div class="bg-light p-2 text-center"
-                        style="height: 250px; display: flex; flex-direction: column; justify-content: center; border: 1px solid #e0e0e0; border-radius: 8px;">
-                        <i class="fas fa-map-marked-alt fa-3x text-muted mb-2"></i>
-                        <span class="text-muted small">Mapa del Sitio</span>
-                        <span class="text-muted small mt-1">Coordenadas: 19.422254, -99.185311</span>
+                    <div style="border-radius: 8px; overflow: hidden;">
+                        <iframe id="mapFrame"
+                            width="100%"
+                            height="250"
+                            style="border:0"
+                            loading="lazy">
+                        </iframe>
+                    </div>
+
+                    <div class="p-2 text-center">
+                        <span id="coordsText" class="text-muted small"></span>
                     </div>
                 </div>
 
@@ -105,7 +111,7 @@
                 <div class="border rounded-4 p-4 bg-white shadow-sm" style="border-color: #e0e0e0 !important;">
 
                     <div class="card border-0 shadow-sm mb-3" style="border-radius: 30px; overflow: hidden;">
-                        <img src="img/personaGuapa.jpg" class="card-img-top" alt="Foto del sitio">
+                        <img src="img/rio.jpg" class="card-img-top" alt="Foto del sitio">
                     </div>
 
                     <div class="chip-container" id="chips-nav">
@@ -271,7 +277,7 @@
                                             class="small">Otros:</span><input type="text"
                                             class="form-control form-control-inline w-50" disabled></div>
 
-                                    <div class="form-label-title mt-3">Formaciones herbáceas nat.</div>
+                                    <div class="form-label-title mt-3">Formaciones herbáceas naturales</div>
                                     <div class="form-check"><input class="form-check-input" type="checkbox"
                                             disabled><label class="small">Vegetación baja inundable</label></div>
                                     <div class="form-label-title mt-2">Ganadería</div>
@@ -397,12 +403,12 @@
                                     <div class="form-check mb-2"><input class="form-check-input" type="checkbox"
                                             disabled checked><label class="small">Ninguna</label></div>
                                     <div class="d-flex align-items-center gap-2 mb-2">
-                                        <span class="small">Presencia de especies dominantes:</span>
+                                        <span class="small" id="label-veg-acuatica">Presencia de especies dominantes:</span>
                                         <input type="text" class="form-control form-control-inline"
                                             style="width: 150px;" disabled>
                                     </div>
                                     <div class="d-flex align-items-center gap-2">
-                                        <span class="small">% de cober. veg. acuática:</span>
+                                        <span class="small" id="label-veg-acuatica">% de cobertura veg. acuática:</span>
                                         <input type="text" class="form-control form-control-inline" style="width: 80px;"
                                             disabled>
                                     </div>
@@ -489,93 +495,116 @@
 
                         <div class="protocol-section" id="sec10">
                             <h5 class="section-header-title">Mediciones para caracterizar el cuerpo de agua</h5>
-                            <div class="table-responsive">
-                                <table class="table table-sm table-borderless align-middle small">
-                                    <tbody>
-                                        <tr>
-                                            <td class="fw-bold">Ancho (m):</td>
-                                            <td>M0 P1: <input type="text" class="form-control form-control-inline"
-                                                    style="width:40px" disabled> P2: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled> P3: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled></td>
-                                            <td>M50 P1: <input type="text" class="form-control form-control-inline"
-                                                    style="width:40px" disabled> P2: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled> P3: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled></td>
-                                            <td>M100 P1: <input type="text" class="form-control form-control-inline"
-                                                    style="width:40px" disabled> P2: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled> P3: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold">Prof. (m):</td>
-                                            <td>M0 P1: <input type="text" class="form-control form-control-inline"
-                                                    style="width:40px" disabled> P2: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled> P3: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled></td>
-                                            <td>M50 P1: <input type="text" class="form-control form-control-inline"
-                                                    style="width:40px" disabled> P2: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled> P3: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled></td>
-                                            <td>M100 P1: <input type="text" class="form-control form-control-inline"
-                                                    style="width:40px" disabled> P2: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled> P3: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold">Velo.(m/s):</td>
-                                            <td>M0 P1: <input type="text" class="form-control form-control-inline"
-                                                    style="width:40px" disabled> P2: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled> P3: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled></td>
-                                            <td>M50 P1: <input type="text" class="form-control form-control-inline"
-                                                    style="width:40px" disabled> P2: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled> P3: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled></td>
-                                            <td>M100 P1: <input type="text" class="form-control form-control-inline"
-                                                    style="width:40px" disabled> P2: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled> P3: <input type="text"
-                                                    class="form-control form-control-inline" style="width:40px"
-                                                    disabled></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+
+                            <!-- ANCHO -->
+                            <div class="measurement-block">
+                                <h6>Ancho (m)</h6>
+
+                                <div class="measurement-grid">
+                                    <div></div>
+                                    <div class="header">M0</div>
+                                    <div class="header">M50</div>
+                                    <div class="header">M100</div>
+
+                                    <div class="row-label">P1</div>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
+
+                                    <div class="row-label">P2</div>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
+
+                                    <div class="row-label">P3</div>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
+                                </div>
                             </div>
 
-                            <div class="row mt-2 border-top pt-2">
-                                <div class="col-md-4 d-flex align-items-center gap-2">
-                                    <span class="small fw-bold">Cobertura del dosel:</span>
-                                    <div class="form-check mb-0"><input class="form-check-input" type="checkbox"
-                                            disabled checked><label class="small">Abierta</label></div>
-                                    <div class="form-check mb-0"><input class="form-check-input" type="checkbox"
-                                            disabled><label class="small">Cubierta</label></div>
+                            <div class="measurement-block">
+                                <h6>Profundidad (m)</h6>
+
+                                <div class="measurement-grid">
+                                    <div></div>
+                                    <div class="header">M0</div>
+                                    <div class="header">M50</div>
+                                    <div class="header">M100</div>
+
+                                    <div class="row-label">P1</div>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
+
+                                    <div class="row-label">P2</div>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
+
+                                    <div class="row-label">P3</div>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
                                 </div>
-                                <div class="col-md-8 d-flex align-items-center justify-content-end gap-2">
-                                    <span class="small fw-bold">Tipo de morfología:</span>
-                                    <span class="small">Rápidos</span> <input type="text"
-                                        class="form-control form-control-inline" style="width:50px" disabled> <span
-                                        class="small">%</span>
-                                    <span class="small ms-3">Pozas</span> <input type="text"
-                                        class="form-control form-control-inline" style="width:50px" disabled> <span
-                                        class="small">%</span>
+                            </div>
+
+                            <div class="measurement-block">
+                                <h6>Velocidad (m/s)</h6>
+
+                                <div class="measurement-grid">
+                                    <div></div>
+                                    <div class="header">M0</div>
+                                    <div class="header">M50</div>
+                                    <div class="header">M100</div>
+
+                                    <div class="row-label">P1</div>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
+
+                                    <div class="row-label">P2</div>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
+
+                                    <div class="row-label">P3</div>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control" disabled>
                                 </div>
+                            </div>
+
+
+                            <div class="row mt-3 border-top pt-3">
+    
+                                <div class="col-md-6">
+                                    <span class="fw-bold">Cobertura del dosel:</span>
+                                    <div class="d-flex gap-3 mt-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" disabled checked>
+                                            <label class="small">Abierta</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" disabled>
+                                            <label class="small">Cubierta</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <span class="fw-bold">Tipo de morfología:</span>
+                                    <div class="d-flex flex-wrap gap-2 mt-1">
+                                        <span>Rápidos</span>
+                                        <input type="text" class="form-control" style="width:60px" disabled>
+                                        <span>%</span>
+
+                                        <span>Pozas</span>
+                                        <input type="text" class="form-control" style="width:60px" disabled>
+                                        <span>%</span>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
 

@@ -1,4 +1,4 @@
- document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
             
             // Lógica de Tabs (Pestañas)
             const chips = document.querySelectorAll('.protocol-chip');
@@ -38,4 +38,15 @@
                     btnModificar.classList.remove('d-none');
                 });
             }
-        });
+
+            function cargarMapa(lat, lng) {
+                const iframe = document.getElementById("mapFrame");
+                const coordsText = document.getElementById("coordsText");
+
+                iframe.src = `https://www.google.com/maps?q=${lat},${lng}&hl=es&z=15&output=embed`;
+                coordsText.textContent = `Coordenadas: ${lat}, ${lng}`;
+            }
+
+            // Ejemplo
+            cargarMapa(19.422254, -99.185311);
+});
