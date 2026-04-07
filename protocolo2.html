@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Bug - Protocolo 2</title>
+
+    <script src="head-loader.js"></script>
+    <link rel="stylesheet" href="css/inicio.css">
+
+    <link rel="stylesheet" href="css/protocolos.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css">
+</head>
+
+<body>
+
+    <div class="sidebar d-flex flex-column">
+        <div class="sidebar-brand">
+            <img src="img/logo-png.png" alt="Deep Bug Logo" class="brand-logo">
+            <span class="brand-text">Deep Bug</span>
+        </div>
+
+        <nav class="nav flex-column mt-4">
+            <a class="nav-link active" href="inicio.html" data-role="admin colaborador">
+                <i class="fas fa-folder"></i> Mis Proyectos
+            </a>
+            <a class="nav-link" href="consultas.html" data-role="admin colaborador">
+                <i class="fas fa-search"></i> Consultas
+            </a>
+            <a class="nav-link" href="familias.html" data-role="admin">
+                <i class="fas fa-layer-group"></i> Familias
+            </a>
+            <a class="nav-link" href="zonas.html" data-role="admin">
+                <i class="fas fa-map-marked-alt"></i> Zonas
+            </a>
+            <a class="nav-link" href="navHub.html" data-role="admin">
+                <i class="fas fa-compass"></i> navHub
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+
+        <div class="top-header">
+            <div>
+                <h4 class="mb-0 text-primary fw-bold">Protocolo 2</h4>
+                <small class="text-primary fw-bold">Caracterización visual y fisicoquímica</small>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="dropdown">
+                    <button class="btn d-flex align-items-center gap-2 p-0 border-0 bg-transparent" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle fa-lg text-primary"></i>
+                        <span class="fw-bold text-dark">Usuario</span>
+                        <i class="fas fa-chevron-down text-primary"></i>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="perfil.html"><i
+                                    class="fas fa-user-edit fa-lg text-primary me-2"></i>Mi perfil</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="login.html"><i
+                                    class="fas fa-door-closed fa-lg text-primary me-2"></i>Cerrar sesión</a></li>
+                    </ul>
+                </div>
+                <!-- Cambiar para que se actualice el usuario automaticamente y cierre sesion funcional-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-5 mb-4">
+                <!-- <button class="btn w-100 mb-3 shadow-sm text-white" style="background-color: #66bb6a; border: none; font-weight: bold;">
+                    <i class="fas fa-file-pdf me-2"></i> Guardar PDF
+                </button>
+                 -->
+
+
+                <div class="card border-0 shadow-sm mb-3">
+                    <div class="bg-light p-2 text-center"
+                        style="height: 250px; display: flex; flex-direction: column; justify-content: center; border: 1px solid #e0e0e0; border-radius: 8px;">
+                        <i class="fas fa-map-marked-alt fa-3x text-muted mb-2"></i>
+                        <span class="text-muted small">Mapa del Sitio</span>
+                        <span class="text-muted small mt-1">Coordenadas: 19.422254, -99.185311</span>
+                    </div>
+                </div>
+
+                <div class="text-end mb-2">
+    <button id="btnModificar" class="btn btn-modificar text-white fw-bold shadow-sm px-4" style="border-radius: 30px;" data-role="admin">
+        <i class="fas fa-edit me-2"></i> Modificar campos
+    </button>
+</div>
+
+<div class="text-end mb-2">
+    <button id="btnGuardarGlobal" class="btn btn-primary fw-bold shadow-sm d-none px-4" style="border-radius: 30px;" data-role="admin">
+        <i class="fas fa-save me-2"></i> Guardar cambios
+    </button>
+</div>
+            </div>
+
+            <div class="col-lg-7">
+
+                <div class="border rounded-4 p-4 bg-white shadow-sm" style="border-color: #e0e0e0 !important;">
+
+                    <div class="card border-0 shadow-sm mb-3" style="border-radius: 30px; overflow: hidden;">
+                        <img src="img/personaGuapa.jpg" class="card-img-top" alt="Foto del sitio">
+                    </div>
+
+                    <div class="chip-container" id="chips-nav">
+                        <div class="protocol-chip active" data-target="sec3">Condiciones Climáticas</div>
+                        <div class="protocol-chip" data-target="sec5">Característica del cuerpo de agua</div>
+                        <div class="protocol-chip" data-target="sec6">Cobertura boscosa</div>
+                        <div class="protocol-chip" data-target="sec7">Descargas y modificaciones</div>
+                        <div class="protocol-chip" data-target="sec8">Vegetación acuática</div>
+                        <div class="protocol-chip" data-target="sec9">Calidad del agua</div>
+                        <div class="protocol-chip" data-target="sec10">Mediciones</div>
+                    </div>
+
+                    <div id="protocolo-sections">
+
+                        <div class="protocol-section active-section" id="sec3">
+                            <h5 class="section-header-title">Condiciones Climáticas</h5>
+                            <div class="custom-check-group mb-3">
+                                <div class="form-check"><input class="form-check-input" type="checkbox" disabled
+                                        checked><label class="form-check-label small">Tormenta</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" disabled><label
+                                        class="form-check-label small">Lluvia</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" disabled><label
+                                        class="form-check-label small">Lluvia intermitente</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" disabled><label
+                                        class="form-check-label small">Claro/Soleado</label></div>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" disabled><label
+                                        class="form-check-label small">Nublado</label></div>
+                            </div>
+                            <div class="row align-items-center">
+                                <div class="col-md-5 d-flex align-items-center gap-2">
+                                    <span class="small fw-bold">Lluvias en últimos 7 días:</span>
+                                    <div class="form-check mb-0"><input class="form-check-input" type="checkbox"
+                                            disabled checked><label class="form-check-label small">Sí</label></div>
+                                    <div class="form-check mb-0"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="form-check-label small">No</label></div>
+                                </div>
+                                <div class="col-md-4 d-flex align-items-center gap-2">
+                                    <span class="small fw-bold">Nubosidad:</span>
+                                    <input type="text" class="form-control form-control-inline" value="Parcial"
+                                        disabled>
+                                </div>
+                                <div class="col-md-3 d-flex align-items-center gap-2">
+                                    <span class="small fw-bold">Temp:</span>
+                                    <input type="text" class="form-control form-control-inline" value="24°C" disabled>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="protocol-section" id="sec5">
+                            <h5 class="section-header-title">Característica del cuerpo de agua</h5>
+                            <div class="row">
+                                <div class="col-md-6 border-end">
+                                    <div class="form-label-title">Subsistema del río</div>
+                                    <div class="custom-check-group">
+                                        <div class="form-check"><input class="form-check-input" type="checkbox" disabled
+                                                checked><label class="small">Perenne</label></div>
+                                        <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                disabled><label class="small">Intermitente</label></div>
+                                        <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                disabled><label class="small">Estacional</label></div>
+                                    </div>
+                                    <div class="form-label-title mt-3">Tipología del curso de agua</div>
+                                    <div class="custom-check-group">
+                                        <div class="form-check"><input class="form-check-input" type="checkbox" disabled
+                                                checked><label class="small">Parte Alta</label></div>
+                                        <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                disabled><label class="small">Parte Media</label></div>
+                                        <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                disabled><label class="small">Parte Baja</label></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 ps-3">
+                                    <div class="form-label-title">Temperatura del agua</div>
+                                    <div class="custom-check-group">
+                                        <div class="form-check"><input class="form-check-input" type="checkbox" disabled
+                                                checked><label class="small">Agua fría</label></div>
+                                        <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                disabled><label class="small">Agua tibia</label></div>
+                                    </div>
+                                    <div class="mt-4 d-flex align-items-center gap-2">
+                                        <span class="small fw-bold">Área de la cuenca:</span>
+                                        <input type="text" class="form-control form-control-inline" value="150"
+                                            disabled> <span class="small">Kms.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="protocol-section" id="sec6">
+                            <h5 class="section-header-title">Cobertura boscosa y uso de la tierra</h5>
+                            <div class="row">
+                                <div class="col-md-4 border-end">
+                                    <div class="form-label-title">Bosques</div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" disabled
+                                            checked><label class="small">Bosque natural</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Bosque plantado</label></div>
+
+                                    <div class="form-label-title">Estado sucesional</div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" disabled
+                                            checked><label class="small">Bosque maduro</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Bosque secundario</label></div>
+
+                                    <div class="form-label-title">Vegetación Arbustiva/Herbáceas</div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Rastrojos y arbustos</label></div>
+                                </div>
+                                <div class="col-md-4 border-end ps-3">
+                                    <div class="form-label-title">Cultivos permanentes</div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                    disabled><label class="small">Café</label></div>
+                                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                    disabled><label class="small">Plátano</label></div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                    disabled><label class="small">Cítricos</label></div>
+                                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                    disabled><label class="small">Palmas</label></div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-1 mt-1"><span
+                                            class="small">Otros:</span><input type="text"
+                                            class="form-control form-control-inline w-50" disabled></div>
+
+                                    <div class="form-label-title">Cultivos anuales</div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                    disabled><label class="small">Arroz</label></div>
+                                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                    disabled><label class="small">Caña</label></div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                    disabled><label class="small">Maíz</label></div>
+                                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                    disabled><label class="small">Piña</label></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-check mt-1"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Horticultura mixta</label></div>
+                                    <div class="d-flex align-items-center gap-1 mt-1"><span
+                                            class="small">Otros:</span><input type="text"
+                                            class="form-control form-control-inline w-50" disabled></div>
+                                </div>
+                                <div class="col-md-4 ps-3">
+                                    <div class="form-label-title">Otros usos</div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Área urbana</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Área rural</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Infraestructuras</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Explo. minera</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Acuicultura</label></div>
+                                    <div class="d-flex align-items-center gap-1 mt-1"><span
+                                            class="small">Otros:</span><input type="text"
+                                            class="form-control form-control-inline w-50" disabled></div>
+
+                                    <div class="form-label-title mt-3">Formaciones herbáceas nat.</div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Vegetación baja inundable</label></div>
+                                    <div class="form-label-title mt-2">Ganadería</div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Presente</label></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="protocol-section" id="sec7">
+                            <h5 class="section-header-title">Descargas y modificaciones al cuerpo de agua</h5>
+                            <div class="row">
+                                <div class="col-md-6 border-end">
+                                    <div class="form-label-title">Descargas de efluentes al cuerpo de agua</div>
+                                    <div class="custom-check-group mb-2">
+                                        <div class="form-check"><input class="form-check-input" type="checkbox" disabled
+                                                checked><label class="small">Ninguna</label></div>
+                                        <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                disabled><label class="small">Descarga directa</label></div>
+                                        <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                disabled><label class="small">Descarga indirecta</label></div>
+                                    </div>
+                                    <div class="form-label-title">Tipo de efluentes al cuerpo de agua</div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Efluentes líquidos de actividad
+                                            doméstica</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Efluentes líquidos de actividad
+                                            comercial</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Efluentes líquidos de actividad
+                                            industrial</label></div>
+                                </div>
+                                <div class="col-md-6 ps-3">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <div class="small fw-bold">Residuos sólidos</div>
+                                            <div class="d-flex gap-2">
+                                                <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                        disabled><label class="small">Sí</label></div>
+                                                <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                        disabled checked><label class="small">No</label></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="small fw-bold">Rectificación</div>
+                                            <div class="d-flex gap-2">
+                                                <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                        disabled><label class="small">Sí</label></div>
+                                                <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                        disabled checked><label class="small">No</label></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <div class="small fw-bold">Presencia de aceites</div>
+                                            <div class="d-flex gap-2">
+                                                <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                        disabled><label class="small">Sí</label></div>
+                                                <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                        disabled checked><label class="small">No</label></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="small fw-bold">Extracciones</div>
+                                            <div class="d-flex gap-2">
+                                                <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                        disabled><label class="small">Sí</label></div>
+                                                <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                        disabled checked><label class="small">No</label></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <div class="small fw-bold">Canalizado</div>
+                                            <div class="d-flex gap-2">
+                                                <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                        disabled><label class="small">Sí</label></div>
+                                                <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                        disabled checked><label class="small">No</label></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="small fw-bold">Presencia de presas</div>
+                                            <div class="d-flex gap-2">
+                                                <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                        disabled><label class="small">Sí</label></div>
+                                                <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                        disabled checked><label class="small">No</label></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-label-title mt-2">Erosión local</div>
+                                    <div class="custom-check-group">
+                                        <div class="form-check"><input class="form-check-input" type="checkbox" disabled
+                                                checked><label class="small">Ninguna</label></div>
+                                        <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                disabled><label class="small">Moderada</label></div>
+                                        <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                disabled><label class="small">Severa</label></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="protocol-section" id="sec8">
+                            <h5 class="section-header-title">Vegetación acuática</h5>
+                            <div class="form-label-title">Identifique la dominancia de vegetación acuática</div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Enraizadas emergentes</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Algas adheridas</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Enraizadas sumergidas</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Flotadoras libres</label></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check mb-2"><input class="form-check-input" type="checkbox"
+                                            disabled checked><label class="small">Ninguna</label></div>
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <span class="small">Presencia de especies dominantes:</span>
+                                        <input type="text" class="form-control form-control-inline"
+                                            style="width: 150px;" disabled>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="small">% de cober. veg. acuática:</span>
+                                        <input type="text" class="form-control form-control-inline" style="width: 80px;"
+                                            disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="protocol-section" id="sec9">
+                            <h5 class="section-header-title">Calidad del agua</h5>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="d-flex justify-content-between mb-1"><span
+                                            class="small">Temperatura:</span> <input type="text"
+                                            class="form-control form-control-inline" disabled></div>
+                                    <div class="d-flex justify-content-between mb-1"><span class="small">Oxígeno
+                                            disuelto:</span> <input type="text" class="form-control form-control-inline"
+                                            disabled></div>
+                                    <div class="d-flex justify-content-between mb-1"><span
+                                            class="small">Turbiedad:</span> <input type="text"
+                                            class="form-control form-control-inline" disabled></div>
+                                    <div class="d-flex justify-content-between mb-1"><span class="small">pH:</span>
+                                        <input type="text" class="form-control form-control-inline" disabled></div>
+                                    <div class="d-flex justify-content-between mb-1"><span
+                                            class="small">Conductividad:</span> <input type="text"
+                                            class="form-control form-control-inline" disabled></div>
+                                    <div class="d-flex justify-content-between mb-1"><span class="small">Equipos
+                                            utilizados:</span> <input type="text"
+                                            class="form-control form-control-inline" disabled></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex justify-content-between mb-1"><span class="small">TDS:</span>
+                                        <input type="text" class="form-control form-control-inline" disabled></div>
+                                    <div class="d-flex justify-content-between mb-1"><span class="small">Nitrito:</span>
+                                        <input type="text" class="form-control form-control-inline" disabled></div>
+                                    <div class="d-flex justify-content-between mb-1"><span class="small">Nitrato:</span>
+                                        <input type="text" class="form-control form-control-inline" disabled></div>
+                                    <div class="d-flex justify-content-between mb-1"><span
+                                            class="small">Salinidad:</span> <input type="text"
+                                            class="form-control form-control-inline" disabled></div>
+                                    <div class="d-flex justify-content-between mb-1"><span
+                                            class="small">Fosfatos:</span> <input type="text"
+                                            class="form-control form-control-inline" disabled></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-label-title mt-0">Olores del agua</div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                    disabled checked><label class="small">Ninguno</label></div>
+                                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                    disabled><label class="small">Pescado</label></div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                    disabled><label class="small">Petróleo</label></div>
+                                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                    disabled><label class="small">Químico</label></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-label-title">Color del agua</div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                    disabled checked><label class="small">Ninguno</label></div>
+                                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                    disabled><label class="small">Blanco</label></div>
+                                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                    disabled><label class="small">Gris</label></div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                    disabled><label class="small">Verde</label></div>
+                                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                    disabled><label class="small">Marrón</label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="protocol-section" id="sec10">
+                            <h5 class="section-header-title">Mediciones para caracterizar el cuerpo de agua</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-borderless align-middle small">
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold">Ancho (m):</td>
+                                            <td>M0 P1: <input type="text" class="form-control form-control-inline"
+                                                    style="width:40px" disabled> P2: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled> P3: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled></td>
+                                            <td>M50 P1: <input type="text" class="form-control form-control-inline"
+                                                    style="width:40px" disabled> P2: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled> P3: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled></td>
+                                            <td>M100 P1: <input type="text" class="form-control form-control-inline"
+                                                    style="width:40px" disabled> P2: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled> P3: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold">Prof. (m):</td>
+                                            <td>M0 P1: <input type="text" class="form-control form-control-inline"
+                                                    style="width:40px" disabled> P2: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled> P3: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled></td>
+                                            <td>M50 P1: <input type="text" class="form-control form-control-inline"
+                                                    style="width:40px" disabled> P2: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled> P3: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled></td>
+                                            <td>M100 P1: <input type="text" class="form-control form-control-inline"
+                                                    style="width:40px" disabled> P2: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled> P3: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold">Velo.(m/s):</td>
+                                            <td>M0 P1: <input type="text" class="form-control form-control-inline"
+                                                    style="width:40px" disabled> P2: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled> P3: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled></td>
+                                            <td>M50 P1: <input type="text" class="form-control form-control-inline"
+                                                    style="width:40px" disabled> P2: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled> P3: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled></td>
+                                            <td>M100 P1: <input type="text" class="form-control form-control-inline"
+                                                    style="width:40px" disabled> P2: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled> P3: <input type="text"
+                                                    class="form-control form-control-inline" style="width:40px"
+                                                    disabled></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="row mt-2 border-top pt-2">
+                                <div class="col-md-4 d-flex align-items-center gap-2">
+                                    <span class="small fw-bold">Cobertura del dosel:</span>
+                                    <div class="form-check mb-0"><input class="form-check-input" type="checkbox"
+                                            disabled checked><label class="small">Abierta</label></div>
+                                    <div class="form-check mb-0"><input class="form-check-input" type="checkbox"
+                                            disabled><label class="small">Cubierta</label></div>
+                                </div>
+                                <div class="col-md-8 d-flex align-items-center justify-content-end gap-2">
+                                    <span class="small fw-bold">Tipo de morfología:</span>
+                                    <span class="small">Rápidos</span> <input type="text"
+                                        class="form-control form-control-inline" style="width:50px" disabled> <span
+                                        class="small">%</span>
+                                    <span class="small ms-3">Pozas</span> <input type="text"
+                                        class="form-control form-control-inline" style="width:50px" disabled> <span
+                                        class="small">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="protocolo2.js"></script>
+    <script src="roles.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
