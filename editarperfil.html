@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar información</title>
+    <script src="head-loader.js"></script>
+    <link rel="stylesheet" href="css/editarperfil.css">
+
+</head>
+<body>
+
+<div class="d-flex">
+    
+    <div class="sidebar d-flex flex-column">
+        <div class="sidebar-brand">
+            <img src="img/logo-png.png" alt="Deep Bug Logo" class="brand-logo">
+            <span class="brand-text">Deep Bug</span>
+        </div>
+        
+        <nav class="nav flex-column mt-4">
+
+            <!-- Visible para todos -->
+            <a class="nav-link" href="inicio.html" data-role="admin colaborador">
+                <i class="fas fa-folder"></i> Mis Proyectos
+            </a>
+
+            <a class="nav-link" href="consultas.html" data-role="admin colaborador">
+                <i class="fas fa-search"></i> Consultas
+            </a>
+
+            <!-- SOLO ADMIN -->
+            <a class="nav-link" href="familias.html" data-role="admin">
+                <i class="fas fa-layer-group"></i> Familias
+            </a>
+
+            <a class="nav-link" href="zonas.html" data-role="admin">
+                <i class="fas fa-map-marked-alt"></i> Zonas
+            </a>
+<!-- Pagina de navhub provisional -->
+            <a class="nav-link" href="navHub.html" data-role="admin">
+                <i class="fas fa-compass"></i> navHub
+            </a>
+
+        </nav>
+    </div>
+
+    <div class="main-content w-100">
+        
+        <div class="top-header">
+            <h4 class="mb-0 text-primary fw-bold">Editar perfil</h4>
+            <div class="d-flex align-items-center gap-2">
+                <div class="dropdown">
+                    <button 
+                        class="btn d-flex align-items-center gap-2 p-0 border-0 bg-transparent"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        <i class="fas fa-user-circle fa-lg text-primary"></i>
+                        <span class="fw-bold text-dark">Usuario</span>
+                        <i class="fas fa-chevron-down text-primary"></i>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="perfil.html"><i class="fas fa-user-edit fa-lg text-primary me-2"></i>Mi perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="login.html"><i class="fas fa-door-closed fa-lg text-primary me-2"></i>Cerrar sesión</a></li>
+                    </ul>
+                    </div>
+                <!-- Cambiar para que se actualice el usuario automaticamente y cierre sesion funcional-->
+            </div>
+        </div>
+
+        <div class="form-container">
+
+            <h3 class="section-title">Información General</h3>
+            <form>
+
+                <!-- FILA 1 -->
+                <div class="form-row">
+                <div class="form-group">
+                    <label>Nombre(s):</label>
+                    <input type="text" value="Diana Ivone">
+                </div>
+
+                <div class="form-group">
+                    <label>Apellido Paterno:</label>
+                    <input type="text" value="Rendón">
+                </div>
+
+                <div class="form-group">
+                    <label>Apellido Materno:</label>
+                    <input type="text" value="Morquecho">
+                </div>
+                </div>
+
+                <!-- FILA 2 -->
+                <div class="form-row">
+                <div class="form-group">
+                    <label>Estudios:</label>
+                    <input type="text" value="Ingeniería en Sistemas">
+                </div>
+
+                <div class="form-group">
+                    <label>Género:</label>
+                    <select>
+                    <option>Femenino</option>
+                    <option>Masculino</option>
+                    <option>Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Institución:</label>
+                    <input type="text" value="IPN">
+                </div>
+
+                <div class="form-group">
+                    <label>Teléfono:</label>
+                    <input type="text" value="5627630757">
+                </div>
+                </div>
+
+                <h3 class="section-title">Dirección</h3>
+
+                <!-- FILA 3 -->
+                <div class="form-row">
+                <div class="form-group">
+                    <label>Calle:</label>
+                    <input type="text" value="Cda. Bosques de Guerrero">
+                </div>
+
+                <div class="form-group small">
+                    <label>No. Ext.</label>
+                    <input type="text" value="24">
+                </div>
+
+                <div class="form-group small">
+                    <label>No. Int.</label>
+                    <input type="text" value="7">
+                </div>
+
+                <div class="form-group small">
+                    <label>C.P</label>
+                    <input type="text" value="55764">
+                </div>
+
+                <div class="form-group">
+                    <label>Estado:</label>
+                    <select>
+                    <option>Aguascalientes</option>
+                    <option>Baja California</option>
+                    <option>Baja California Sur</option>
+                    <option>Campeche</option>
+                    <option>Chiapas</option>
+                    <option>Chihuahua</option>
+                    <option>Ciudad de México</option>
+                    <option>Coahuila</option>
+                    <option>Colima</option>
+                    <option>Durango</option>
+                    <option>Estado de México</option>
+                    <option>Guanajuato</option>
+                    <option>Guerrero</option>
+                    <option>Hidalgo</option>
+                    <option>Jalisco</option>
+                    <option>Michoacán</option>
+                    <option>Morelos</option>
+                    <option>Nayarit</option>
+                    <option>Nuevo León</option>
+                    <option>Oaxaca</option>
+                    <option>Puebla</option>
+                    <option>Querétaro</option>
+                    <option>Quintana Roo</option>
+                    <option>San Luis Potosí</option>
+                    <option>Sinaloa</option>
+                    <option>Sonora</option>
+                    <option>Tabasco</option>
+                    <option>Tamaulipas</option>
+                    <option>Tlaxcala</option>
+                    <option>Veracruz</option>
+                    <option>Yucatán</option>
+                    <option>Zacatecas</option>
+                    </select>
+                </div>
+                </div> <!-- Div de fila 3-->
+
+                <!-- FILA 4 -->
+                <div class="form-row">
+                <div class="form-group">
+                    <label>Municipio / Alcaldía:</label>
+                    <input type="text" value="Tecámac">
+                </div>
+
+                <div class="form-group">
+                    <label>Localidad:</label>
+                    <input type="text" value="Ojo de agua">
+                </div>
+
+                <div class="form-group">
+                    <label>Colonia:</label>
+                    <input type="text" value="Bosques">
+                </div>
+                </div>
+
+                <!-- BOTÓN -->
+                 <!-- Hacer que si se guarden los cambios en la bd -->
+                <div class="form-actions">
+                <a type="button" href="perfil.html" class="profile-action-btn-green">Guardar</a>
+                </div>
+
+            </form>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="roles.js"></script>
+</body>
+</html>

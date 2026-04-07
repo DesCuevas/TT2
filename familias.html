@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Familias</title>
+    <script src="head-loader.js"></script>
+    <link rel="stylesheet" href="css/familias.css">
+</head>
+<body>
+
+<div class="d-flex">
+    
+    <div class="sidebar d-flex flex-column">
+        <div class="sidebar-brand">
+            <img src="img/logo-png.png" alt="Deep Bug Logo" class="brand-logo">
+            <span class="brand-text">Deep Bug</span>
+        </div>
+        
+        <nav class="nav flex-column mt-4">
+
+            <!-- Visible para todos -->
+            <a class="nav-link" href="inicio.html" data-role="admin colaborador">
+                <i class="fas fa-folder"></i> Mis Proyectos
+            </a>
+
+            <a class="nav-link" href="consultas.html" data-role="admin colaborador">
+                <i class="fas fa-search"></i> Consultas
+            </a>
+
+            <!-- SOLO ADMIN -->
+            <a class="nav-link active" href="familias.html" data-role="admin">
+                <i class="fas fa-layer-group"></i> Familias
+            </a>
+
+            <a class="nav-link" href="zonas.html" data-role="admin">
+                <i class="fas fa-map-marked-alt"></i> Zonas
+            </a>
+<!-- Pagina de navhub provisional -->
+
+            <a class="nav-link" href="navHub.html" data-role="admin">
+                <i class="fas fa-compass"></i> navHub
+            </a>
+
+        </nav>
+    </div>
+
+    <div class="main-content w-100">
+        
+        <div class="top-header">
+            <h4 class="mb-0 text-primary fw-bold">Familias</h4>
+            <div class="d-flex align-items-center gap-2">
+                <div class="dropdown">
+                    <button 
+                        class="btn d-flex align-items-center gap-2 p-0 border-0 bg-transparent"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        <i class="fas fa-user-circle fa-lg text-primary"></i>
+                        <span class="fw-bold text-dark">Usuario</span>
+                        <i class="fas fa-chevron-down text-primary"></i>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="perfil.html"><i class="fas fa-user-edit fa-lg text-primary me-2"></i>Mi perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="login.html"><i class="fas fa-door-closed fa-lg text-primary me-2"></i>Cerrar sesión</a></li>
+                    </ul>
+                    </div>
+                <!-- Cambiar para que se actualice el usuario automaticamente y cierre sesion funcional-->
+            </div>
+        </div>
+
+        <div class="container-fluid px-4">
+            
+            <div class="family-header-actions">
+                <button class="family-btn-add" data-bs-toggle="modal" data-bs-target="#addFamilyModal">
+                    <i class="fas fa-folder-plus"></i> Agregar Familia
+                </button>
+            </div>
+
+            
+            <div class="family-table-header">
+                <div class="family-col-name">Nombre de la Familia</div>
+                <div class="family-col-orden">Orden</div>
+                <div class="family-col-val1">
+                    Valor BMWP
+                    <span class="family-header-sub">Sierra Gorda</span>
+                </div>
+                <div class="family-col-val2">
+                    Valor BMWP
+                    <span class="family-header-sub">Balsas Río</span>
+                </div>
+                <div class="family-col-val3">
+                    Valor BMWP
+                    <span class="family-header-sub">Río Bravo</span>
+                </div>
+            </div>
+
+            <div class="family-table-row">
+                <div class="family-col-name">Nombre de la familia</div>
+                <div class="family-col-orden">T</div>
+                <div class="family-col-val1">3</div>
+                <div class="family-col-val2">5</div>
+                <div class="family-col-val3">2</div>
+            </div>
+
+            <div class="family-table-row">
+                <div class="family-col-name">Nombre de la familia</div>
+                <div class="family-col-orden">T</div>
+                <div class="family-col-val1">3</div>
+                <div class="family-col-val2">5</div>
+                <div class="family-col-val3">2</div>
+            </div>
+
+            <div class="family-table-row">
+                <div class="family-col-name">Nombre de la familia</div>
+                <div class="family-col-orden">T</div>
+                <div class="family-col-val1">3</div>
+                <div class="family-col-val2">5</div>
+                <div class="family-col-val3">2</div>
+            </div>
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addFamilyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content family-modal-content">
+            <div class="modal-body">
+                
+                <h3 class="family-modal-title">Añadir Familia</h3>
+
+                <div class="family-upload-area">
+                    <!-- Hacer que esto abra el explorador de archivos -->
+                    <i class="fas fa-plus-square family-upload-icon"></i>
+                    Agregar Imagen
+                </div>
+
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="family-modal-label">Nombre de la Familia:</label>
+                            <input type="text" class="family-modal-input">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="family-modal-label">Origen:</label>
+                            <input type="text" class="family-modal-input">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="family-modal-label">Valor BMWP/MEX</label>
+                            <input type="text" class="family-modal-input">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="family-modal-label">Tamaño:</label>
+                            <input type="text" class="family-modal-input">
+                        </div>
+                    </div>
+
+                    <label class="family-modal-label">Descripción:</label>
+                    <textarea class="family-modal-textarea"></textarea>
+
+                    <button type="button" class="family-btn-submit">Añadir Familia</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="roles.js"></script>
+</body>
+</html>

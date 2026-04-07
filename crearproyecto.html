@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Proyecto</title>
+    
+    <script src="head-loader.js"></script>
+
+    <link rel="stylesheet" href="css/crearproyecto.css">
+</head>
+<body>
+
+<div class="d-flex">
+    
+    <div class="sidebar d-flex flex-column">
+        <div class="sidebar-brand">
+            <img src="img/logo-png.png" alt="Deep Bug Logo" class="brand-logo">
+            <span class="brand-text">Deep Bug</span>
+        </div>
+        
+        <nav class="nav flex-column mt-4">
+
+            <!-- Visible para todos -->
+            <a class="nav-link" href="inicio.html" data-role="admin colaborador">
+                <i class="fas fa-folder"></i> Mis Proyectos
+            </a>
+
+            <a class="nav-link" href="consultas.html" data-role="admin colaborador">
+                <i class="fas fa-search"></i> Consultas
+            </a>
+
+            <!-- SOLO ADMIN -->
+            <a class="nav-link" href="familias.html" data-role="admin">
+                <i class="fas fa-layer-group"></i> Familias
+            </a>
+
+            <a class="nav-link" href="zonas.html" data-role="admin">
+                <i class="fas fa-map-marked-alt"></i> Zonas
+            </a>
+<!-- Pagina de navhub provisional -->
+
+            <a class="nav-link" href="navHub.html" data-role="admin">
+                <i class="fas fa-compass"></i> navHub
+            </a>
+
+        </nav>
+    </div>
+
+    <div class="main-content w-100">
+        
+        <div class="top-header">
+            <h4 class="mb-0 text-primary fw-bold">Mis Proyectos</h4>
+            <div class="d-flex align-items-center gap-2">
+                <div class="dropdown">
+                    <button 
+                        class="btn d-flex align-items-center gap-2 p-0 border-0 bg-transparent"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        <i class="fas fa-user-circle fa-lg text-primary"></i>
+                        <span class="fw-bold text-dark">Usuario</span>
+                        <i class="fas fa-chevron-down text-primary"></i>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="perfil.html"><i class="fas fa-user-edit fa-lg text-primary me-2"></i>Mi perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="login.html"><i class="fas fa-door-closed fa-lg text-primary me-2"></i>Cerrar sesión</a></li>
+                    </ul>
+                    </div>
+                <!-- Cambiar para que se actualice el usuario automaticamente y cierre sesion funcional-->
+            </div>
+        </div>
+
+        <div class="container-fluid px-4">
+            
+            <div class="row">
+                
+                <div class="col-lg-7">
+                    
+                    <div class="accordion" id="createProjectAccordion">
+                        
+                        <div class="createProject-accordion-item">
+                            <button class="createProject-accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDatos" aria-expanded="true" aria-controls="collapseDatos">
+                                <span>1. Datos Generales</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            
+                            <div id="collapseDatos" class="collapse show" data-bs-parent="#createProjectAccordion">
+                                <div class="createProject-accordion-body">
+                                    <!-- Hacer que estas zonas se muestren segun las zonas en la bd, si se quiere agregar una zona primero se tiene que crear-->
+                                    <label class="createProject-label">Zona:</label>
+                                    <select class="createProject-select">
+                                        <option>Seleccione Zona...</option>
+                                        <option>Sierra Gorda</option>
+                                    </select>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="createProject-label">Nombre del proyecto:</label>
+                                            <input type="text" class="createProject-input">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="createProject-label">Persona de Contacto:</label>
+                                            <input type="text" class="createProject-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="createProject-label">Provincia(s):</label>
+                                            <input type="text" class="createProject-input">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="createProject-label">Inicio de Muestreo:</label>
+                                            <input type="date" class="createProject-input" placeholder="dd/mm/aaaa">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="createProject-label">Fin de Muestreo:</label>
+                                            <input type="date" class="createProject-input" placeholder="dd/mm/aaaa">
+                                        </div>
+                                    </div>
+
+                                    <label class="createProject-label">Objetivo del muestreo:</label>
+                                    <input type="text" class="createProject-input">
+
+                                    <button id="btnGuardarDatos1" class="createProject-btn-save-small">Guardar Datos</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="createProject-accordion-item">
+                            <button class="createProject-accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAgua" aria-expanded="false" aria-controls="collapseAgua">
+                                <span>2. Datos del Cuerpo de agua</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            
+                            <div id="collapseAgua" class="collapse" data-bs-parent="#createProjectAccordion">
+                                <div class="createProject-accordion-body">
+                                    
+                                    <div class="row">
+                                        <!-- <div class="col-md-4">
+                                            <label class="createProject-label">ID del Proyecto</label>
+                                            <input type="text" class="createProject-input">
+                                        </div> -->
+                                        <div class="col-md-4">
+                                            <label class="createProject-label">Orden del rio</label>
+                                            <input type="text" class="createProject-input">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="createProject-label">Nombre del rio</label>
+                                            <input type="text" class="createProject-input">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="createProject-label">ID Estación</label>
+                                            <input type="text" class="createProject-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="createProject-label">Longitud</label>
+                                            <input type="text" class="createProject-input">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="createProject-label">Latitud</label>
+                                            <input type="text" class="createProject-input">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="createProject-label">Altura</label>
+                                            <input type="text" class="createProject-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="createProject-label">Cuenca</label>
+                                            <input type="text" class="createProject-input">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="createProject-label">Localidad</label>
+                                            <input type="text" class="createProject-input">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="createProject-label">Provincia</label>
+                                            <input type="text" class="createProject-input">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="createProject-label">Corregimiento</label>
+                                            <input type="text" class="createProject-input">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="createProject-label">Distrito</label>
+                                            <input type="text" class="createProject-input">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="createProject-label">Horario de Muestreo</label>
+                                            <input type="time" class="createProject-input">
+                                        </div>
+                                    </div>
+
+                                    <button id="btnGuardarDatos2" class="createProject-btn-save-small">Guardar Datos</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="createProject-accordion-item">
+                            <button class="createProject-accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseID" aria-expanded="false" aria-controls="collapseID">
+                                <span>3. Número de control</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div id="collapseID" class="collapse" data-bs-parent="#createProjectAccordion">
+                                <div class="createProject-accordion-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="createProject-label">ID del Proyecto</label>
+                                            <input type="text" class="createProject-input">
+                                        </div>
+                                    </div>
+                                    <button id="btnGuardarDatos3" class="createProject-btn-save-small">Guardar Datos</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="createProject-right-panel">
+                        
+                        <div>
+                            <h5 class="createProject-panel-title">Invitar colaboradores:</h5>
+                            <!-- Hacer que con el enter se agregue -->
+                            <!-- <input type="email" class="createProject-invite-input" placeholder="Ingresa el correo del colaborador..."> <i class="fas fa-plus-circle createProject-collab-remove"></i> -->
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="email" class="createProject-invite-input" placeholder="Ingresa el correo del colaborador...">
+                                    <i class="fas fa-plus-circle createProject-collab-add"></i>
+                                </div>
+                        
+                            <!-- ESTADO 1: LISTA CON COLABORADORES -->
+                            
+                            <div class="createProject-collab-list">
+                                <div class="createProject-collab-item">
+                                    <div class="createProject-collab-avatar"><i class="fas fa-user"></i></div>
+                                    <div class="createProject-collab-info">
+                                        <p class="createProject-collab-name">Nombre del colaborador</p>
+                                        <p class="createProject-collab-email">Correo-electronico@gmail.com</p>
+                                    </div>
+                                    <i class="far fa-times-circle createProject-collab-remove"></i>
+                                </div>
+                                <div class="createProject-collab-item">
+                                    <div class="createProject-collab-avatar"><i class="fas fa-user"></i></div>
+                                    <div class="createProject-collab-info">
+                                        <p class="createProject-collab-name">Nombre del colaborador</p>
+                                        <p class="createProject-collab-email">Correo-electronico@gmail.com</p>
+                                    </div>
+                                    <i class="far fa-times-circle createProject-collab-remove"></i>
+                                </div>
+                            </div>
+                           
+
+                            <!-- ESTADO 2: VACÍO  -->
+                            <!-- Descomentar estas lineas y comentar el bloque de arriba si es que se quiere ver la lista vacía -->
+                        <!-- Hacer que primero salga así antes de agregar colaboradores -->
+                            <!-- <div class="createProject-empty-state">
+                                <i class="far fa-envelope-open createProject-empty-icon"></i>
+                                <p class="createProject-empty-text">Aun no cuentas con colaboradores invitados</p>
+                            </div> -->
+                        </div> 
+
+                        <div>
+                            <!-- Hacer que estos botones lo guarden en la base de datos y se actualice el inicio-->
+                            <!-- Hacer que estos botones estén en gris hasta que se haya dado click en los 3 botones de guardar (createProject-btn-action-gray)-->
+                            <a class="createProject-btn-action-green" href="inicio.html" data-role="admin colaborador">Guardar</a>
+                            <a class="createProject-btn-action-blue" href="protocolo1.html">Guardar y comenzar Protocolo 1</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="roles.js"></script>
+<!-- Funcion de cerrar automaticamente conforme se guardan los datos -->
+<script src="crearproyecto.js"></script>
+</body>
+</html>

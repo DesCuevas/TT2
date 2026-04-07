@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil</title>
+    <script src="head-loader.js"></script>
+    <link rel="stylesheet" href="css/perfil.css">
+
+</head>
+<body>
+
+<div class="d-flex">
+    
+    <div class="sidebar d-flex flex-column">
+        <div class="sidebar-brand">
+            <img src="img/logo-png.png" alt="Deep Bug Logo" class="brand-logo">
+            <span class="brand-text">Deep Bug</span>
+        </div>
+        
+        <nav class="nav flex-column mt-4">
+
+            <!-- Visible para todos -->
+            <a class="nav-link" href="inicio.html" data-role="admin colaborador">
+                <i class="fas fa-folder"></i> Mis Proyectos
+            </a>
+
+            <a class="nav-link" href="consultas.html" data-role="admin colaborador">
+                <i class="fas fa-search"></i> Consultas
+            </a>
+
+            <!-- SOLO ADMIN -->
+            <a class="nav-link" href="familias.html" data-role="admin">
+                <i class="fas fa-layer-group"></i> Familias
+            </a>
+
+            <a class="nav-link" href="zonas.html" data-role="admin">
+                <i class="fas fa-map-marked-alt"></i> Zonas
+            </a>
+<!-- Pagina de navhub provisional -->
+            <a class="nav-link" href="navHub.html" data-role="admin">
+                <i class="fas fa-compass"></i> navHub
+            </a>
+
+        </nav>
+    </div>
+
+    <div class="main-content w-100">
+        
+        <div class="top-header">
+            <h4 class="mb-0 text-primary fw-bold">Mi perfil</h4>
+            <div class="d-flex align-items-center gap-2">
+                <div class="dropdown">
+                    <button 
+                        class="btn d-flex align-items-center gap-2 p-0 border-0 bg-transparent"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        <i class="fas fa-user-circle fa-lg text-primary"></i>
+                        <span class="fw-bold text-dark">Usuario</span>
+                        <i class="fas fa-chevron-down text-primary"></i>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="perfil.html"><i class="fas fa-user-edit fa-lg text-primary me-2"></i>Mi perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="login.html"><i class="fas fa-door-closed fa-lg text-primary me-2"></i>Cerrar sesión</a></li>
+                    </ul>
+                    </div>
+                <!-- Cambiar para que se actualice el usuario automaticamente y cierre sesion funcional-->
+            </div>
+        </div>
+
+        <div class="container px-5">
+        <!-- Esto hace que este boton se muestre solo si no eres admin -->
+         <!-- Hacer que el codigo se valide para cambiar el estatus a admin -->
+            <div class="d-flex justify-content-end mb-4" data-role="colaborador">
+                <button class="profile-btn-admin" data-bs-toggle="modal" data-bs-target="#adminModal">Volverme Admin</button>
+            </div>
+
+            <div class="text-center">
+                <div class="profile-avatar-box">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3 class="profile-name-title">USUARIO APELLIDO APELLIDO</h3>
+                <p class="profile-email-text">correolargo@gmail.com</p>
+            </div>
+
+            <div class="profile-info-card">
+                <h4 class="profile-section-title">Información Personal</h4>
+
+                <div class="row mb-3">
+                    <div class="col-md-auto profile-data-group">
+                        <span class="profile-data-label">Telefono:</span> 5555555555
+                    </div>
+                    <div class="col-md-auto profile-data-group">
+                        <span class="profile-data-label">Género:</span> Femenino
+                    </div>
+                    <div class="col-md-auto profile-data-group">
+                        <span class="profile-data-label">Estudios:</span> Ingeniería en Sistemas
+                    </div>
+                    <div class="col-md-auto profile-data-group">
+                        <span class="profile-data-label">Fecha de Nacimiento:</span> 11/09/1996
+                    </div>
+                    <div class="col-md-auto profile-data-group">
+                        <span class="profile-data-label">Instituto:</span> IPN
+                    </div>
+                </div>
+
+                <div class="profile-data-group mb-5">
+                    <span class="profile-data-label">Recidencia:</span> 
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                </div>
+                    <!-- Hacer que esto funcione y cambie con la bd -->
+                <div class="d-flex gap-3 flex-wrap">
+                    <a type="button" href="editarperfil.html" class="profile-action-btn-green">Editar Información</a>
+                    <!-- <button class="profile-action-btn-green" href="editarperfil.html">Editar Información</button> -->
+                    <button class="profile-action-btn-blue">Cambiar Contraseña</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- POP UP de volverte admin -->
+<div class="modal fade" id="adminModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content profile-modal-content p-4">
+            <div class="modal-body text-center">
+                
+                <h3 class="profile-modal-title mb-2">Vuelvete Admin</h3>
+                
+                <p class="text-muted small mb-4">Por favor ingrese su código de administrador</p>
+                
+                <div class="text-start">
+                    <label class="profile-modal-label">Ingresa el código</label>
+                    <input type="text" class="profile-modal-input" value="codiguito=)">
+                </div>
+
+                <button type="button" class="profile-modal-btn">Ingresar</button>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="roles.js"></script>
+</body>
+</html>
