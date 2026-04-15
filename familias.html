@@ -84,44 +84,40 @@
             <div class="family-table-header">
                 <div class="family-col-name">Nombre de la Familia</div>
                 <div class="family-col-orden">Orden</div>
-                <div class="family-col-val1">
-                    Valor BMWP
-                    <span class="family-header-sub">Sierra Gorda</span>
-                </div>
+                <div class="family-col-tamano">Tamaño</div>
                 <div class="family-col-val2">
-                    Valor BMWP
-                    <span class="family-header-sub">Balsas Río</span>
+                    <!-- Hacer que esta linea se actualice conforme se añadan zonas a la bd y se cambie el valor en tabla dinamicamente-->
+                <label class="family-col-val2">Valor BMWP</label>
+                    <div class="family-header-sub">
+                        <select>
+                            <option>Seleccionar zona...</option>
+                            <option>Heteragrionidae</option>
+                            <option>Ceratopogonidae</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="family-col-val3">
-                    Valor BMWP
-                    <span class="family-header-sub">Río Bravo</span>
-                </div>
             </div>
 
             <div class="family-table-row">
                 <div class="family-col-name">Nombre de la familia</div>
                 <div class="family-col-orden">T</div>
-                <div class="family-col-val1">3</div>
+                <div class="family-col-tamano">3</div>
                 <div class="family-col-val2">5</div>
-                <div class="family-col-val3">2</div>
             </div>
 
             <div class="family-table-row">
                 <div class="family-col-name">Nombre de la familia</div>
                 <div class="family-col-orden">T</div>
-                <div class="family-col-val1">3</div>
+                <div class="family-col-tamano">3</div>
                 <div class="family-col-val2">5</div>
-                <div class="family-col-val3">2</div>
             </div>
 
             <div class="family-table-row">
                 <div class="family-col-name">Nombre de la familia</div>
                 <div class="family-col-orden">T</div>
-                <div class="family-col-val1">3</div>
+                <div class="family-col-tamano">3</div>
                 <div class="family-col-val2">5</div>
-                <div class="family-col-val3">2</div>
-            </div>
-            
+            </div>        
 
         </div>
     </div>
@@ -146,18 +142,11 @@
                             <label class="family-modal-label">Nombre de la Familia:</label>
                             <input type="text" class="family-modal-input">
                         </div>
-                        <div class="col-md-6">
-                            <label class="family-modal-label">Origen:</label>
+                        <div class="col-md-3">
+                            <label class="family-modal-label">Orden:</label>
                             <input type="text" class="family-modal-input">
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label class="family-modal-label">Valor BMWP/MEX</label>
-                            <input type="text" class="family-modal-input">
-                        </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <label class="family-modal-label">Tamaño:</label>
                             <input type="text" class="family-modal-input">
                         </div>
