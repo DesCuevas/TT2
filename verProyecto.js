@@ -32,13 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-
+//Aqui se tienen que cargar dinamicamente y se actualiza el modal según si existe o no el protocolo.
     const protocolos = {
-        1: null, // existe pero especial
+        1: null, // existe pero especial, cambiar a "protocolo1.html" para ver cambio de modal a página
         2: "protocolo2.html",
         3: "protocolo3.html",
-        4: null,
-        5: null
+        4: "protocolo4.html",
+        5: "protocolo5.html"
     };
 
     const modalGeneral = new bootstrap.Modal(document.getElementById('protocolModal'));
@@ -53,7 +53,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (id == 1) {
                 // 🔥 CASO ESPECIAL
-                modalP1.show();
+                if (link) {
+                    window.location.href = link;
+                }
+
+                else {
+                    modalP1.show();
+                }
 
             } else if (link) {
                 // ✅ Existe
