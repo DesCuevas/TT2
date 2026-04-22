@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocolo 5</title>
+    <script src="head-loader.js"></script>
+    <link rel="stylesheet" href="css/protocolocinco.css">
+</head>
+<body>
+
+<div class="d-flex">
+    
+    <div class="sidebar d-flex flex-column">
+        <div class="sidebar-brand">
+            <img src="img/logo-png.png" alt="Deep Bug Logo" class="brand-logo">
+            <span class="brand-text">Deep Bug</span>
+        </div>
+
+        <nav class="nav flex-column mt-4">
+            <a class="nav-link" href="inicio.html" data-role="admin colaborador">
+                <i class="fas fa-folder"></i> Mis Proyectos
+            </a>
+            <a class="nav-link" href="consultas.html" data-role="admin colaborador">
+                <i class="fas fa-search"></i> Consultas
+            </a>
+            <a class="nav-link" href="familias.html" data-role="admin">
+                <i class="fas fa-layer-group"></i> Familias
+            </a>
+            <a class="nav-link" href="zonas.html" data-role="admin">
+                <i class="fas fa-map-marked-alt"></i> Zonas
+            </a>
+            <a class="nav-link" href="navHub.html" data-role="admin">
+                <i class="fas fa-compass"></i> navHub
+            </a>
+        </nav>
+    </div>
+
+
+    <div class="main-content">
+        
+        <div class="top-header">
+            <div>
+                <h4 class="mb-0 text-primary fw-bold">Protocolo 5</h4>
+                <small class="text-primary fw-bold">Análisis de muestras y BMWP/Mex</small>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="dropdown">
+                    <button class="btn d-flex align-items-center gap-2 p-0 border-0 bg-transparent" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle fa-lg text-primary"></i>
+                        <span class="fw-bold text-dark">Usuario</span>
+                        <i class="fas fa-chevron-down text-primary"></i>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="perfil.html"><i
+                                    class="fas fa-user-edit fa-lg text-primary me-2"></i>Mi perfil</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="login.html"><i
+                                    class="fas fa-door-closed fa-lg text-primary me-2"></i>Cerrar sesión</a></li>
+                    </ul>
+                </div>
+                <!-- Cambiar para que se actualice el usuario automaticamente y cierre sesion funcional-->
+            </div>
+        </div>
+
+        <div class="container-fluid px-4">
+            <div class="row">
+                <div class="col-lg-6 mb-5">
+                    <h5 class="protocolFive-section-title">Análisis de Muestras</h5>
+                    <div id="analysisContainer">
+                        </div>
+                    <div class="protocolFive-total-score" id="totalBmwpLabel">
+                        BMWP/MX: 0
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div data-role="admin" class="mb-4">
+                        <div class="d-flex gap-2 mb-3">
+                            <button id="btnModificar" class="btn btn-primary-deep rounded-pill px-4">
+                                <i class="fas fa-edit me-2"></i>Modificar datos
+                            </button>
+                            <button id="btnGuardar" class="btn btn-success-deep rounded-pill px-4 d-none">
+                                <i class="fas fa-save me-2"></i>Guardar cambios
+                            </button>
+                        </div>
+
+                        <div id="adminSearchSection" class="opacity-50" style="pointer-events: none;">
+                            <h5 class="protocolFive-section-title">Agregar Familias</h5>
+                            <input type="text" id="familySearch" class="form-control rounded-pill mb-3" placeholder="Primero haz clic en Modificar datos...">
+                            <div id="catalogList" class="p-2 border rounded" style="max-height: 250px; overflow-y: auto; background: white;">
+                                </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-start mb-3">
+                        <div class="protocolFive-info-box" id="totalQualityBox">
+                            Total de índice BMWP/MEX: 0
+                        </div>
+                    </div>
+
+                    <div class="protocolFive-table-header">
+                        <div class="col-p5-cat">Categoría</div>
+                        <div class="col-p5-range">Rango</div>
+                        <div class="col-p5-quality">Calidad Biológica</div>
+                        <div class="col-p5-color">Color</div>
+                    </div>
+
+                    <div class="protocolFive-table-row" id="resultRow">
+                        <div class="col-p5-cat" id="resClass">-</div>
+                        <div class="col-p5-range" id="resRange">-</div>
+                        <div class="col-p5-quality" id="resQuality">Sin datos</div>
+                        <div class="col-p5-color">
+                            <span class="protocolFive-color-dot" id="resDot"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="roles.js"></script>
+<script src="protocolo5.js"></script>
+</body>
+</html>
