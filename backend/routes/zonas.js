@@ -13,31 +13,12 @@ const upload = require('../middleware/upload');
 
 router.get('/', auth, async (req, res) => {
   try {
-    const usuarioId = req.usuario.id;
-    const rol = req.usuario.rol;
-
-    let zonas;
-
-    if (rol === 'Administrador' || rol === 'Responsable') {
-      // 1. Los jefes tienen vista panorámica: obtienen todas las zonas
-      zonas = await Zona.find();
-    } else {
-      // 2. Los colaboradores solo ven lo que tienen en su mochila
-      // Usamos .populate() para que Mongo convierta los IDs guardados en los objetos completos de las Zonas
-      const usuarioConZonas = await Usuario.findById(usuarioId).populate('zonas_asignadas');
-      
-      if (!usuarioConZonas) {
-        return res.status(404).json({ mensaje: 'Usuario no encontrado' });
-      }
-      
-      zonas = usuarioConZonas.zonas_asignadas;
-    }
-
+    // Las zonas son el catálogo base. Todos los usuarios logueados pueden verlas.
+    const zonas = await Zona.find();
     res.json(zonas);
-    
   } catch (error) {
     console.error("Error al obtener las zonas:", error);
-    res.status(500).json({ mensaje: 'Error interno al cargar los proyectos' });
+    res.status(500).json({ mensaje: 'Error interno al cargar el catálogo de zonas' });
   }
 });
 // --- 2. CREAR UNA NUEVA ZONA ---
