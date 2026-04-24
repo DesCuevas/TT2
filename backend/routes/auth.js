@@ -32,7 +32,7 @@ router.post('/registro', async (req, res) => {
     await nuevoUsuario.save();
 
     // NUEVO: Creamos el Token inmediatamente después de registrarlo
-    const JWT_SECRET = process.env.JWT_SECRET || 'super_secreto_para_desarrollo_deep_bug';
+    const JWT_SECRET = process.env.JWT_SECRET;
     const token = jwt.sign(
       { id: nuevoUsuario._id, rol: nuevoUsuario.rol }, 
       JWT_SECRET, 
@@ -65,7 +65,7 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ mensaje: 'Correo o contraseña incorrectos' });
     }
 
-    const JWT_SECRET = process.env.JWT_SECRET || 'super_secreto_para_desarrollo_deep_bug';
+    const JWT_SECRET = process.env.JWT_SECRET;
     const token = jwt.sign(
       { id: usuario._id, rol: usuario.rol }, 
       JWT_SECRET, 
@@ -97,7 +97,7 @@ router.post('/validar-codigo', authMiddleware, async (req, res) => {
         const userId = req.usuario.id; // Viene del token decodificado por tu middleware
 
         // 1. Validar si es el súper código de Responsable
-        const codigoProfesor = process.env.CODIGO_PROFESOR || 'ADMIN-ENCB';
+        const codigoProfesor = process.env.CODIGO_RESP;
         if (codigo.toUpperCase() === codigoProfesor) {
             await Usuario.findByIdAndUpdate(userId, { rol: 'Responsable' });
             return res.status(200).json({ mensaje: '¡Bienvenido! Rol asignado: Responsable.' });
