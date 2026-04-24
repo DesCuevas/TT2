@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/usuarios');
 const auth = require('../middleware/auth'); // <-- Importamos tu middleware
-const Biomonitoreo = require('../models/Biomonitoreo');
+const Biomonitoreo = require('../models/biomonitoreo');
 
 const router = express.Router();
 
