@@ -97,7 +97,7 @@ router.post('/validar-codigo', authMiddleware, async (req, res) => {
         const userId = req.usuario.id; // Viene del token decodificado por tu middleware
 
         // 1. Validar si es el súper código de Responsable
-        const codigoProfesor = process.env.CODIGO_RESP;
+        const codigoProfesor = process.env.CODIGO_PROFESOR || 'ADMIN-ENCB';
         if (codigo.toUpperCase() === codigoProfesor) {
             await Usuario.findByIdAndUpdate(userId, { rol: 'Responsable' });
             return res.status(200).json({ mensaje: '¡Bienvenido! Rol asignado: Responsable.' });
