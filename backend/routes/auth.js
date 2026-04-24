@@ -3,7 +3,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/usuarios');
-const Zona = require('../models/Zona'); // <-- IMPORTANTE: Asegúrate de que esta ruta sea correcta
+const Zona = require('../models/zonas'); // <-- IMPORTANTE: Asegúrate de que esta ruta sea correcta
 const authMiddleware = require('../middleware/auth'); // <-- Importamos tu middleware
 
 const router = express.Router();
