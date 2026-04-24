@@ -12,6 +12,7 @@ const familiaSchema = new mongoose.Schema({
 const zonaSchema = new mongoose.Schema({
   nombre: { type: String, required: true },
   descripcion: { type: String },
+  codigo: { type: String, required: true, unique: true },
   catalogo_familias: [familiaSchema] // El arreglo de familias incrustado
 });
 

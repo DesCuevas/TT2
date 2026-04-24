@@ -1,4 +1,4 @@
-// Archivo: models/Usuario.js
+// Archivo: models/usuarios.js
 const mongoose = require('mongoose');
 
 const usuarioSchema = new mongoose.Schema({
@@ -8,9 +8,11 @@ const usuarioSchema = new mongoose.Schema({
   password: { type: String, required: true },
   rol: { 
     type: String, 
-    enum: ['Administrador', 'Responsable', 'Colaborador'], 
-    default: 'Colaborador' 
-  }
+    enum: ['Administrador', 'Responsable', 'Colaborador', 'Pendiente'], // <-- Agregamos Pendiente
+    default: 'Pendiente' // <-- El valor inicial por seguridad
+  },
+  // <-- NUEVO: Aquí guardaremos las zonas a las que pertenece
+  zonas_asignadas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Zona' }] 
 });
 
 module.exports = mongoose.model('Usuario', usuarioSchema);

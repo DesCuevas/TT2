@@ -15,7 +15,7 @@ module.exports = function (req, res, next) {
     const tokenLimpio = token.replace('Bearer ', '');
 
     // 3. Revisamos que el gafete sea original y no esté falsificado
-    const JWT_SECRET = process.env.JWT_SECRET || 'super_secreto_para_desarrollo_deep_bug';
+    const JWT_SECRET = process.env.JWT_SECRET;
     const verificado = jwt.verify(tokenLimpio, JWT_SECRET);
 
     // 4. Si es válido, guardamos los datos del usuario (su ID y su Rol) en la petición
