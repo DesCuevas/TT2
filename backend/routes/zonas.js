@@ -10,17 +10,25 @@ const upload = require('../middleware/upload');
 // URL: GET http://localhost:3000/api/zonas
 // Nota: Pusimos 'auth' a la mitad. Esto obliga a que pase por el guardia primero.
 // Archivo: routes/zonas.js (o donde tengas tus endpoints de zonas)
-
 router.get('/', auth, async (req, res) => {
   try {
-    // Las zonas son el catálogo base. Todos los usuarios logueados pueden verlas.
+    // BLOQUEO DE SEGURIDAD: Los colaboradores no tienen por qué ver el catálogo raíz
+    if (req.usuario.rol === 'Colaborador') {
+      return res.status(403).json({ 
+        mensaje: 'Acceso denegado. Solo los Responsables o Administradores pueden acceder a los catálogos geográficos.' 
+      });
+    }
+
+    // Si pasa el filtro (es Responsable o Admin), le devolvemos la lista
     const zonas = await Zona.find();
     res.json(zonas);
+    
   } catch (error) {
     console.error("Error al obtener las zonas:", error);
     res.status(500).json({ mensaje: 'Error interno al cargar el catálogo de zonas' });
   }
 });
+
 // --- 2. CREAR UNA NUEVA ZONA ---
 // URL: POST http://localhost:3000/api/zonas
 router.post('/', auth, async (req, res) => {
