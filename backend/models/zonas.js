@@ -1,4 +1,4 @@
-// Archivo: models/Zona.js
+// Archivo: models/zonas.js
 const mongoose = require('mongoose');
 
 const familiaSchema = new mongoose.Schema({
@@ -12,8 +12,8 @@ const familiaSchema = new mongoose.Schema({
 const zonaSchema = new mongoose.Schema({
   nombre: { type: String, required: true },
   descripcion: { type: String },
-  codigo: { type: String, required: true, unique: true },
-  catalogo_familias: [familiaSchema] // El arreglo de familias incrustado
+  // Ya no necesitamos 'codigo' aquí, porque el código de invitación vive en Biomonitoreo
+  catalogo_familias: [familiaSchema] 
 });
 
 module.exports = mongoose.model('Zona', zonaSchema);

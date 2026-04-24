@@ -9,16 +9,37 @@ const upload = require('../middleware/upload');
 // --- 1. OBTENER TODAS LAS ZONAS Y SUS CATÁLOGOS ---
 // URL: GET http://localhost:3000/api/zonas
 // Nota: Pusimos 'auth' a la mitad. Esto obliga a que pase por el guardia primero.
+// Archivo: routes/zonas.js (o donde tengas tus endpoints de zonas)
+
 router.get('/', auth, async (req, res) => {
   try {
-    const zonas = await Zona.find();
+    const usuarioId = req.usuario.id;
+    const rol = req.usuario.rol;
+
+    let zonas;
+
+    if (rol === 'Administrador' || rol === 'Responsable') {
+      // 1. Los jefes tienen vista panorámica: obtienen todas las zonas
+      zonas = await Zona.find();
+    } else {
+      // 2. Los colaboradores solo ven lo que tienen en su mochila
+      // Usamos .populate() para que Mongo convierta los IDs guardados en los objetos completos de las Zonas
+      const usuarioConZonas = await Usuario.findById(usuarioId).populate('zonas_asignadas');
+      
+      if (!usuarioConZonas) {
+        return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+      }
+      
+      zonas = usuarioConZonas.zonas_asignadas;
+    }
+
     res.json(zonas);
+    
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error al obtener las zonas' });
+    console.error("Error al obtener las zonas:", error);
+    res.status(500).json({ mensaje: 'Error interno al cargar los proyectos' });
   }
 });
-
 // --- 2. CREAR UNA NUEVA ZONA ---
 // URL: POST http://localhost:3000/api/zonas
 router.post('/', auth, async (req, res) => {

@@ -3,8 +3,8 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/usuarios');
-const Zona = require('../models/zonas'); // <-- IMPORTANTE: Asegúrate de que esta ruta sea correcta
-const authMiddleware = require('../middleware/auth'); // <-- Importamos tu middleware
+const auth = require('../middleware/auth'); // <-- Importamos tu middleware
+const Biomonitoreo = require('../models/Biomonitoreo');
 
 const router = express.Router();
 
@@ -90,8 +90,8 @@ router.post('/login', async (req, res) => {
 });
 
 // --- 3. RUTA DE ONBOARDING (Validar Códigos) ---
-// Usamos tu middleware authMiddleware para proteger la ruta
-router.post('/validar-codigo', authMiddleware, async (req, res) => {
+// Usamos tu middleware auth para proteger la ruta
+router.post('/validar-codigo', auth, async (req, res) => {
     try {
         const { codigo } = req.body;
         const userId = req.usuario.id; // Viene del token decodificado por tu middleware
@@ -103,14 +103,22 @@ router.post('/validar-codigo', authMiddleware, async (req, res) => {
             return res.status(200).json({ mensaje: '¡Bienvenido! Rol asignado: Responsable.' });
         }
 
-        // 2. Validar si es el código de un Biomonitoreo (Zona)
-        const zona = await Zona.findOne({ codigo: codigo.toUpperCase() });
-        if (zona) {
-            await Usuario.findByIdAndUpdate(userId, {
-                rol: 'Colaborador',
-                $addToSet: { zonas_asignadas: zona._id } 
-            });
-            return res.status(200).json({ mensaje: `Te has unido al proyecto ${zona.nombre} exitosamente.` });
+        // 2. Validar si es el código de un Biomonitoreo (Invitación a proyecto)
+        const proyecto = await Biomonitoreo.findOne({ codigo_invitacion: codigo.toUpperCase() });
+        
+        if (proyecto) {
+            // Revisamos si ya está adentro para no duplicarlo
+            const yaEsMiembro = proyecto.colaboradores_id.includes(userId) || proyecto.responsable_id.includes(userId);
+            
+            if (!yaEsMiembro) {
+                // Lo metemos al proyecto
+                proyecto.colaboradores_id.push(userId);
+                await proyecto.save();
+                
+                // Le actualizamos su rol
+                await Usuario.findByIdAndUpdate(userId, { rol: 'Colaborador' });
+            }
+            return res.status(200).json({ mensaje: `Te has unido al proyecto ${proyecto.nombre_proyecto} exitosamente.` });
         }
 
         // 3. Si no es ninguno de los dos
@@ -123,7 +131,7 @@ router.post('/validar-codigo', authMiddleware, async (req, res) => {
 });
 
 // Ruta para obtener el perfil del usuario actual
-router.get('/perfil', authMiddleware, async (req, res) => {
+router.get('/perfil', auth, async (req, res) => {
   try {
     // Buscamos al usuario por el ID que viene en el Token
     const usuario = await Usuario.findById(req.usuario.id).select('-password'); // Excluimos la contraseña
