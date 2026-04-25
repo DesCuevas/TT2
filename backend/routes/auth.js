@@ -3,15 +3,16 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/usuarios');
-const auth = require('../middleware/auth'); // <-- Importamos tu middleware
-const Biomonitoreo = require('../models/biomonitoreo');
+const auth = require('../middleware/auth'); 
+const Biomonitoreo = require('../models/Biomonitoreo');
 
 const router = express.Router();
 
-// --- 1. RUTA DE REGISTRO ---
+// --- 1. RUTA DE REGISTRO (CON LÓGICA DE CÓDIGOS) ---
 router.post('/registro', async (req, res) => {
   try {
-    const { nombre, institucion, email, password } = req.body;
+    // 1. Recibimos el código opcional además de los datos básicos
+    const { nombre, institucion, email, password, codigo } = req.body;
 
     const usuarioExistente = await Usuario.findOne({ email });
     if (usuarioExistente) {
@@ -21,18 +22,48 @@ router.post('/registro', async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const passwordEncriptada = await bcrypt.hash(password, salt);
 
+    // --- LÓGICA DE ASIGNACIÓN DE ROLES ---
+    let rolAsignado = 'Pendiente'; // Rol por defecto
+    let proyectoEncontrado = null;
+
+    if (codigo) {
+      const codigoLimpio = codigo.trim().toUpperCase();
+      
+      // A. ¿Es el código secreto de Responsable?
+      if (codigoLimpio === (process.env.CODIGO_RESP || 'ADMIN-ENCB')) {
+        rolAsignado = 'Responsable';
+      } else {
+        // B. ¿Es el código de invitación a un proyecto?
+        proyectoEncontrado = await Biomonitoreo.findOne({ codigo_invitacion: codigoLimpio });
+        
+        if (proyectoEncontrado) {
+          rolAsignado = 'Colaborador';
+        } else {
+          // Si el usuario puso un código pero no existe, devolvemos error
+          return res.status(400).json({ mensaje: 'El código ingresado no es válido.' });
+        }
+      }
+    }
+
+    // 2. Creamos al nuevo usuario con el rol determinado
     const nuevoUsuario = new Usuario({
       nombre,
       institucion,
       email,
       password: passwordEncriptada,
-      rol: 'Pendiente' // Siempre forzamos a Pendiente al inicio
+      rol: rolAsignado
     });
 
     await nuevoUsuario.save();
 
-    // NUEVO: Creamos el Token inmediatamente después de registrarlo
-    const JWT_SECRET = process.env.JWT_SECRET;
+    // 3. Si se unió como colaborador, lo vinculamos al proyecto de una vez
+    if (proyectoEncontrado && rolAsignado === 'Colaborador') {
+      proyectoEncontrado.colaboradores_id.push(nuevoUsuario._id);
+      await proyectoEncontrado.save();
+    }
+
+    // 4. Generamos el Token con el rol ya asignado
+    const JWT_SECRET = process.env.JWT_SECRET || 'super_secreto_para_desarrollo_deep_bug';
     const token = jwt.sign(
       { id: nuevoUsuario._id, rol: nuevoUsuario.rol }, 
       JWT_SECRET, 
@@ -41,7 +72,8 @@ router.post('/registro', async (req, res) => {
 
     res.status(201).json({ 
         mensaje: 'Usuario registrado exitosamente',
-        token: token // Lo devolvemos para que Flutter lo guarde
+        token: token,
+        rol: rolAsignado // Enviamos el rol para que Flutter sepa si ir a Onboarding o Dashboard
     });
 
   } catch (error) {
@@ -50,7 +82,7 @@ router.post('/registro', async (req, res) => {
   }
 });
 
-// --- 2. RUTA DE LOGIN (Se queda exactamente igual que el tuyo) ---
+// --- 2. RUTA DE LOGIN ---
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -65,7 +97,7 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ mensaje: 'Correo o contraseña incorrectos' });
     }
 
-    const JWT_SECRET = process.env.JWT_SECRET;
+    const JWT_SECRET = process.env.JWT_SECRET || 'super_secreto_para_desarrollo_deep_bug';
     const token = jwt.sign(
       { id: usuario._id, rol: usuario.rol }, 
       JWT_SECRET, 
@@ -89,39 +121,31 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// --- 3. RUTA DE ONBOARDING (Validar Códigos) ---
-// Usamos tu middleware auth para proteger la ruta
+// --- 3. RUTA DE ONBOARDING (Para usuarios que no pusieron código al registrarse) ---
 router.post('/validar-codigo', auth, async (req, res) => {
     try {
         const { codigo } = req.body;
-        const userId = req.usuario.id; // Viene del token decodificado por tu middleware
+        const userId = req.usuario.id;
 
-        // 1. Validar si es el súper código de Responsable
-        const codigoProfesor = process.env.CODIGO_RESP;
+        const codigoProfesor = process.env.CODIGO_RESP || 'ADMIN-ENCB';
         if (codigo.toUpperCase() === codigoProfesor) {
             await Usuario.findByIdAndUpdate(userId, { rol: 'Responsable' });
             return res.status(200).json({ mensaje: '¡Bienvenido! Rol asignado: Responsable.' });
         }
 
-        // 2. Validar si es el código de un Biomonitoreo (Invitación a proyecto)
         const proyecto = await Biomonitoreo.findOne({ codigo_invitacion: codigo.toUpperCase() });
         
         if (proyecto) {
-            // Revisamos si ya está adentro para no duplicarlo
             const yaEsMiembro = proyecto.colaboradores_id.includes(userId) || proyecto.responsable_id.includes(userId);
             
             if (!yaEsMiembro) {
-                // Lo metemos al proyecto
                 proyecto.colaboradores_id.push(userId);
                 await proyecto.save();
-                
-                // Le actualizamos su rol
                 await Usuario.findByIdAndUpdate(userId, { rol: 'Colaborador' });
             }
             return res.status(200).json({ mensaje: `Te has unido al proyecto ${proyecto.nombre_proyecto} exitosamente.` });
         }
 
-        // 3. Si no es ninguno de los dos
         return res.status(404).json({ mensaje: 'Código inválido o proyecto no encontrado.' });
 
     } catch (error) {
@@ -130,13 +154,11 @@ router.post('/validar-codigo', auth, async (req, res) => {
     }
 });
 
-// Ruta para obtener el perfil del usuario actual
+// --- 4. RUTA DE PERFIL ---
 router.get('/perfil', auth, async (req, res) => {
   try {
-    // Buscamos al usuario por el ID que viene en el Token
-    const usuario = await Usuario.findById(req.usuario.id).select('-password'); // Excluimos la contraseña
+    const usuario = await Usuario.findById(req.usuario.id).select('-password');
     if (!usuario) return res.status(404).json({ mensaje: 'Usuario no encontrado' });
-    
     res.json(usuario);
   } catch (error) {
     res.status(500).json({ mensaje: 'Error al obtener el perfil' });
