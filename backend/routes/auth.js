@@ -207,4 +207,36 @@ router.put('/cambiar-password', auth, async (req, res) => {
   }
 });
 
+router.put('/actualizar-perfil', auth, async (req, res) => {
+  try {
+    const { nombre, institucion } = req.body;
+    const usuarioId = req.usuario.id;
+
+    // 1. Buscamos al usuario
+    const usuario = await Usuario.findById(usuarioId);
+    if (!usuario) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado.' });
+    }
+
+    // 2. Actualizamos solo los campos que nos enviaron
+    if (nombre) usuario.nombre = nombre;
+    if (institucion) usuario.institucion = institucion;
+
+    // 3. Guardamos los cambios
+    await usuario.save();
+
+    res.json({ 
+      mensaje: 'Perfil actualizado exitosamente.',
+      usuario: {
+        nombre: usuario.nombre,
+        institucion: usuario.institucion
+      }
+    });
+
+  } catch (error) {
+    console.error("Error al actualizar perfil:", error);
+    res.status(500).json({ mensaje: 'Error interno al actualizar los datos.' });
+  }
+});
+
 module.exports = router;
