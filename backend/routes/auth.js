@@ -3,8 +3,8 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/usuarios');
-const auth = require('../middleware/auth'); 
-const Biomonitoreo = require('../models/Biomonitoreo');
+const auth = require('../middleware/auth'); // <-- Importamos tu middleware
+const Biomonitoreo = require('../models/biomonitoreo');
 
 const router = express.Router();
 
@@ -40,30 +40,6 @@ router.post('/registro', async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const passwordEncriptada = await bcrypt.hash(password, salt);
 
-    // --- LÓGICA DE ASIGNACIÓN DE ROLES ---
-    let rolAsignado = 'Pendiente'; // Rol por defecto
-    let proyectoEncontrado = null;
-
-    if (codigo) {
-      const codigoLimpio = codigo.trim().toUpperCase();
-      
-      // A. ¿Es el código secreto de Responsable?
-      if (codigoLimpio === (process.env.CODIGO_RESP || 'ADMIN-ENCB')) {
-        rolAsignado = 'Responsable';
-      } else {
-        // B. ¿Es el código de invitación a un proyecto?
-        proyectoEncontrado = await Biomonitoreo.findOne({ codigo_invitacion: codigoLimpio });
-        
-        if (proyectoEncontrado) {
-          rolAsignado = 'Colaborador';
-        } else {
-          // Si el usuario puso un código pero no existe, devolvemos error
-          return res.status(400).json({ mensaje: 'El código ingresado no es válido.' });
-        }
-      }
-    }
-
-    // 2. Creamos al nuevo usuario con el rol determinado
     const nuevoUsuario = new Usuario({
       nombre,
       institucion,
