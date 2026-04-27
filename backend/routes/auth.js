@@ -173,5 +173,38 @@ router.get('/perfil', auth, async (req, res) => {
     res.status(500).json({ mensaje: 'Error al obtener el perfil' });
   }
 });
+// --- 5. RUTA PARA CAMBIAR CONTRASEÑA ---
+router.put('/cambiar-password', auth, async (req, res) => {
+  try {
+    const { passwordActual, nuevaPassword } = req.body;
+    const usuarioId = req.usuario.id; // Viene del token gracias al middleware 'auth'
+
+    // 1. Buscamos al usuario en la base de datos
+    const usuario = await Usuario.findById(usuarioId);
+    if (!usuario) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado.' });
+    }
+
+    // 2. Comparamos la contraseña actual que escribió con la que está en la BD
+    const esValida = await bcrypt.compare(passwordActual, usuario.password);
+    if (!esValida) {
+      return res.status(400).json({ mensaje: 'La contraseña actual es incorrecta.' });
+    }
+
+    // 3. Si es válida, encriptamos la NUEVA contraseña
+    const salt = await bcrypt.genSalt(10);
+    const nuevaPasswordEncriptada = await bcrypt.hash(nuevaPassword, salt);
+
+    // 4. Actualizamos el documento y lo guardamos
+    usuario.password = nuevaPasswordEncriptada;
+    await usuario.save();
+
+    res.json({ mensaje: 'Contraseña actualizada exitosamente.' });
+
+  } catch (error) {
+    console.error("Error al cambiar contraseña:", error);
+    res.status(500).json({ mensaje: 'Error interno del servidor al actualizar credenciales.' });
+  }
+});
 
 module.exports = router;
