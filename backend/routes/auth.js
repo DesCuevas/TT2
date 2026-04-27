@@ -9,13 +9,44 @@ const Biomonitoreo = require('../models/biomonitoreo');
 const router = express.Router();
 
 // --- 1. RUTA DE REGISTRO ---
+// --- 1. RUTA DE REGISTRO (ESTRICTA CON CÓDIGO) ---
 router.post('/registro', async (req, res) => {
   try {
     const { nombre, institucion, email, password, codigo } = req.body;
     console.log("Iniciando registro para:", email);
 
-    // ... (Validaciones y hashing igual que antes) ...
+    // 1. Validar presencia de código
+    if (!codigo) {
+      return res.status(400).json({ mensaje: 'El código de invitación es obligatorio.' });
+    }
 
+    // 2. Verificar que el correo no exista
+    const usuarioExistente = await Usuario.findOne({ email });
+    if (usuarioExistente) {
+      return res.status(400).json({ mensaje: 'Ese correo ya está registrado.' });
+    }
+
+    // 3. Determinar ROL o REBOTAR
+    const codigoLimpio = codigo.trim().toUpperCase();
+    let rolAsignado = '';
+    let proyectoEncontrado = null;
+
+    if (codigoLimpio === (process.env.CODIGO_RESP || 'ADMIN-ENCB')) {
+      rolAsignado = 'Responsable';
+    } else {
+      proyectoEncontrado = await Biomonitoreo.findOne({ codigo_invitacion: codigoLimpio });
+      if (proyectoEncontrado) {
+        rolAsignado = 'Colaborador';
+      } else {
+        return res.status(400).json({ mensaje: 'Código inválido. No se puede crear la cuenta.' });
+      }
+    }
+
+    // 4. HASHEAR LA CONTRASEÑA (¡Esto es lo que faltaba!)
+    const salt = await bcrypt.genSalt(10);
+    const passwordEncriptada = await bcrypt.hash(password, salt);
+
+    // 5. Crear usuario
     const nuevoUsuario = new Usuario({
       nombre,
       institucion,
@@ -27,15 +58,15 @@ router.post('/registro', async (req, res) => {
     await nuevoUsuario.save();
     console.log("Usuario guardado en BD con rol:", rolAsignado);
 
+    // 6. Vincular a proyecto si es colaborador
     if (proyectoEncontrado && rolAsignado === 'Colaborador') {
       proyectoEncontrado.colaboradores_id.push(nuevoUsuario._id);
       await proyectoEncontrado.save();
       console.log("Vinculado al proyecto:", proyectoEncontrado.nombre_proyecto);
     }
 
-    // --- GENERACIÓN SEGURA DEL TOKEN ---
+    // 7. Generar el Token
     const secret = process.env.JWT_SECRET || 'llave_temporal_de_emergencia';
-    
     try {
       const token = jwt.sign(
         { id: nuevoUsuario._id, rol: nuevoUsuario.rol }, 
@@ -51,7 +82,7 @@ router.post('/registro', async (req, res) => {
       });
     } catch (jwtError) {
       console.error("Error crítico al firmar el token:", jwtError);
-      return res.status(500).json({ mensaje: 'Usuario creado pero fallo el inicio de sesión automático.' });
+      return res.status(500).json({ mensaje: 'Usuario creado pero fallo el inicio de sesión.' });
     }
 
   } catch (error) {
