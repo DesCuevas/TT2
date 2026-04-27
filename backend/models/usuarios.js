@@ -8,8 +8,8 @@ const usuarioSchema = new mongoose.Schema({
   password: { type: String, required: true },
   rol: { 
     type: String, 
-    enum: ['Administrador', 'Responsable', 'Colaborador', 'Pendiente'], // <-- Agregamos Pendiente
-    default: 'Pendiente' // <-- El valor inicial por seguridad
+    enum: ['Administrador', 'Responsable', 'Colaborador'], // <-- Agregamos Pendiente
+    required: true
   },
   // <-- NUEVO: Aquí guardaremos las zonas a las que pertenece
   zonas_asignadas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Zona' }] 

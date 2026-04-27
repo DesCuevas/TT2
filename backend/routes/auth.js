@@ -9,15 +9,34 @@ const Biomonitoreo = require('../models/biomonitoreo');
 const router = express.Router();
 
 // --- 1. RUTA DE REGISTRO ---
+// Archivo: routes/auth.js
 router.post('/registro', async (req, res) => {
   try {
-    const { nombre, institucion, email, password } = req.body;
+    const { nombre, institucion, email, password, codigo } = req.body;
 
-    const usuarioExistente = await Usuario.findOne({ email });
-    if (usuarioExistente) {
-      return res.status(400).json({ mensaje: 'Ese correo ya está registrado' });
+    // 1. Validar presencia de código
+    if (!codigo) {
+      return res.status(400).json({ mensaje: 'El código de invitación es obligatorio.' });
     }
 
+    // 2. Determinar ROL o REBOTAR
+    const codigoLimpio = codigo.trim().toUpperCase();
+    let rolAsignado;
+    let proyectoEncontrado = null;
+
+    if (codigoLimpio === (process.env.CODIGO_RESP || 'ADMIN-ENCB')) {
+      rolAsignado = 'Responsable';
+    } else {
+      proyectoEncontrado = await Biomonitoreo.findOne({ codigo_invitacion: codigoLimpio });
+      if (proyectoEncontrado) {
+        rolAsignado = 'Colaborador';
+      } else {
+        // SI EL CÓDIGO NO COINCIDE CON NADA, MATAMOS EL PROCESO AQUÍ
+        return res.status(400).json({ mensaje: 'Código inválido. No se puede crear la cuenta.' });
+      }
+    }
+
+    // 3. Crear usuario solo si pasó las pruebas anteriores
     const salt = await bcrypt.genSalt(10);
     const passwordEncriptada = await bcrypt.hash(password, salt);
 
@@ -26,27 +45,16 @@ router.post('/registro', async (req, res) => {
       institucion,
       email,
       password: passwordEncriptada,
-      rol: 'Pendiente' // Siempre forzamos a Pendiente al inicio
+      rol: rolAsignado // Aquí ya es Responsable o Colaborador, nunca Pendiente
     });
 
     await nuevoUsuario.save();
-
-    // NUEVO: Creamos el Token inmediatamente después de registrarlo
-    const JWT_SECRET = process.env.JWT_SECRET;
-    const token = jwt.sign(
-      { id: nuevoUsuario._id, rol: nuevoUsuario.rol }, 
-      JWT_SECRET, 
-      { expiresIn: '30d' }
-    );
-
-    res.status(201).json({ 
-        mensaje: 'Usuario registrado exitosamente',
-        token: token // Lo devolvemos para que Flutter lo guarde
-    });
+    
+    // ... vincular a proyecto si es colaborador y generar Token ...
+    res.status(201).json({ mensaje: 'Registro exitoso', token, rol: rolAsignado });
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error en el servidor al registrar' });
+    res.status(500).json({ mensaje: 'Error en el servidor' });
   }
 });
 
