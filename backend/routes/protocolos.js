@@ -64,6 +64,72 @@ router.post('/sincronizar', auth, async (req, res) => {
   }
 });
 
+// --- 2. OBTENER PROTOCOLOS DE UN PROYECTO (Para el Dashboard Web) ---
+// URL: GET http://localhost:3000/api/protocolos/:biomonitoreo_id
+router.get('/:biomonitoreo_id', auth, async (req, res) => {
+  try {
+    const { biomonitoreo_id } = req.params;
+
+    // Buscamos todos los protocolos de este proyecto
+    // Populate nos trae los datos del usuario que lo llenó (para mostrar su nombre en la web)
+    const protocolos = await Protocolo.find({ biomonitoreo_id })
+                                      .populate('usuario_id', 'nombre email');
+
+    res.json(protocolos);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al obtener los protocolos' });
+  }
+});
+
+// --- 3. RESOLVER CONFLICTO (Solo Responsables/Administradores) ---
+// URL: PUT http://localhost:3000/api/protocolos/resolver/:id_protocolo
+router.put('/resolver/:id_protocolo', auth, async (req, res) => {
+  try {
+    // REGLA: Un colaborador no puede resolver conflictos
+    if (req.usuario.rol === 'Colaborador') {
+      return res.status(403).json({ mensaje: 'No tienes permisos para resolver conflictos.' });
+    }
+
+    const { id_protocolo } = req.params;
+    const { accion } = req.body; // 'aprobar' o 'descartar'
+
+    const protocolo = await Protocolo.findById(id_protocolo);
+    if (!protocolo) {
+      return res.status(404).json({ mensaje: 'Protocolo no encontrado' });
+    }
+
+    if (accion === 'aprobar') {
+      // 1. Buscamos si había otro protocolo aprobado y lo pasamos a descartado (lo sustituimos)
+      await Protocolo.findOneAndUpdate(
+        { 
+          biomonitoreo_id: protocolo.biomonitoreo_id, 
+          protocolo_numero: protocolo.protocolo_numero, 
+          estado: 'aprobado' 
+        },
+        { estado: 'descartado' }
+      );
+
+      // 2. Aprobamos este
+      protocolo.estado = 'aprobado';
+      await protocolo.save();
+      
+      return res.json({ mensaje: 'Protocolo aprobado exitosamente', protocolo });
+      
+    } else if (accion === 'descartar') {
+      protocolo.estado = 'descartado';
+      await protocolo.save();
+      return res.json({ mensaje: 'Protocolo descartado', protocolo });
+    } else {
+      return res.status(400).json({ mensaje: 'Acción no válida. Usa "aprobar" o "descartar".' });
+    }
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al resolver el conflicto' });
+  }
+});
+
 // --- NUEVA RUTA: OBTENER MI BORRADOR GUARDADO ---
 router.get('/mi-borrador/:biomonitoreo_id/:protocolo_numero', auth, async (req, res) => {
   try {
@@ -83,4 +149,4 @@ router.get('/mi-borrador/:biomonitoreo_id/:protocolo_numero', auth, async (req, 
   }
 });
 
-// ... (Tus rutas GET /:biomonitoreo_id y PUT /resolver/:id_protocolo se quedan igualitas que antes) ...
+module.exports = router;
