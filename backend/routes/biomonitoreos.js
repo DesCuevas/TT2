@@ -56,9 +56,14 @@ router.post('/unirse', auth, async (req, res) => {
       return res.status(404).json({ mensaje: 'Código de invitación inválido o no existe.' });
     }
 
-    // Revisamos si el usuario ya está en el proyecto para no duplicarlo
-    const yaEsColaborador = proyecto.colaboradores_id.includes(req.usuario.id);
-    const yaEsResponsable = proyecto.responsable_id.includes(req.usuario.id);
+    // APLICAMOS TOSTRING() PARA COMPARAR DE FORMA SEGURA
+    const userIdText = req.usuario.id.toString();
+    
+    // Verificamos en el arreglo de colaboradores usando .some()
+    const yaEsColaborador = proyecto.colaboradores_id.some(id => id.toString() === userIdText);
+    
+    // Verificamos al responsable directamente
+    const yaEsResponsable = proyecto.responsable_id.toString() === userIdText;
 
     if (yaEsColaborador || yaEsResponsable) {
       return res.status(400).json({ mensaje: 'Ya eres miembro de este proyecto.' });

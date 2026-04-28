@@ -3,7 +3,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/usuarios');
-const auth = require('../middleware/auth'); // <-- Importamos tu middleware
+const auth = require('../middleware/auth'); 
 const Biomonitoreo = require('../models/biomonitoreo');
 
 const router = express.Router();
@@ -42,7 +42,7 @@ router.post('/registro', async (req, res) => {
       }
     }
 
-    // 4. HASHEAR LA CONTRASEÑA (¡Esto es lo que faltaba!)
+    // 4. HASHEAR LA CONTRASEÑA
     const salt = await bcrypt.genSalt(10);
     const passwordEncriptada = await bcrypt.hash(password, salt);
 
@@ -130,7 +130,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// --- 3. RUTA DE ONBOARDING (Para usuarios que no pusieron código al registrarse) ---
+// --- 3. RUTA DE ONBOARDING ---
 router.post('/validar-codigo', auth, async (req, res) => {
     try {
         const { codigo } = req.body;

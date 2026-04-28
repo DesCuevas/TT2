@@ -10,7 +10,7 @@ const protocolo5Schema = new mongoose.Schema({
   sumatoria_total_bmwp: { type: Number, default: 0 }
 });
 
-const protocoloSchema = new mongoose.Schema({
+const protocoloSchema = new mongoose.Schema({ 
   usuario_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true },
   biomonitoreo_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Biomonitoreo', required: true },
   fecha_llenado: { type: Date, default: Date.now },
