@@ -91,12 +91,43 @@ router.get('/', auth, async (req, res) => {
         { responsable_id: req.usuario.id },
         { colaboradores_id: req.usuario.id }
       ]
-    }).populate('zona_id', 'nombre'); // Populate nos trae el nombre de la zona, no solo su ID
+    })
+    .populate('zona_id', 'nombre') // Populate nos trae el nombre de la zona, no solo su ID
+    .populate('responsable_id', 'nombre') // Trae los nombres de los responsables
+    .populate('colaboradores_id', 'nombre'); // Trae los nombres de los colaboradores
 
     res.json(misProyectos);
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: 'Error al obtener los proyectos' });
+  }
+});
+
+// --- 4. REMOVER COLABORADOR ---
+// URL: PUT http://localhost:3000/api/biomonitoreos/:id/remover-colaborador
+router.put('/:id/remover-colaborador', auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { colaborador_id } = req.body;
+
+    const biomonitoreo = await Biomonitoreo.findById(id);
+    if (!biomonitoreo) return res.status(404).json({ mensaje: 'Proyecto no encontrado' });
+
+    // Verificar que el que hace la petición es el Responsable
+    if (biomonitoreo.responsable_id.toString() !== req.usuario.id) {
+      return res.status(403).json({ mensaje: 'Solo el Responsable puede eliminar colaboradores' });
+    }
+
+    // Filtramos el arreglo para quitar al colaborador (usamos toString para comparar bien los ObjectIds)
+    biomonitoreo.colaboradores_id = biomonitoreo.colaboradores_id.filter(
+      colab => colab.toString() !== colaborador_id
+    );
+
+    await biomonitoreo.save();
+    res.json({ mensaje: 'Colaborador removido exitosamente' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al remover colaborador' });
   }
 });
 
