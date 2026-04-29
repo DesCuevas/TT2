@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const Protocolo = require('../models/protocolo');
 const auth = require('../middleware/auth');
+const Biomonitoreo = require('../models/biomonitoreo');
 
 // --- 1. SINCRONIZAR (CREAR O ACTUALIZAR) PROTOCOLOS ---
 router.post('/sincronizar', auth, async (req, res) => {
@@ -30,6 +31,19 @@ router.post('/sincronizar', auth, async (req, res) => {
         if(datos_protocolo_5) miProtocolo.datos_protocolo_5 = datos_protocolo_5;
         miProtocolo.fecha_llenado = Date.now();
         await miProtocolo.save();
+
+        // --- NUEVO: AVISARLE AL PROYECTO QUE YA SE LLENÓ EL PROTOCOLO ---
+      if (protocolo_numero === 1) {
+        // Evaluamos si el biólogo marcó al menos una casilla de parámetros In Situ
+        const inSitu = datos_formulario.parametros_in_situ || {};
+        const inSituLleno = Object.values(inSitu).some(valor => valor === true);
+        const estadoCalculado = inSituLleno ? 2 : 1; // 2 = Verde, 1 = Naranja
+
+        // Actualizamos el documento del proyecto
+        await Biomonitoreo.findByIdAndUpdate(biomonitoreo_id, {
+          $set: { 'estado_protocolos.protocolo1': estadoCalculado }
+        });
+      }
         
         resultados.push({ protocolo_numero, estado_asignado: miProtocolo.estado, mensaje: 'Actualizado correctamente' });
       } else {
@@ -52,6 +66,20 @@ router.post('/sincronizar', auth, async (req, res) => {
         });
 
         await nuevoProtocolo.save();
+
+        // --- NUEVO: AVISARLE AL PROYECTO QUE YA SE LLENÓ EL PROTOCOLO ---
+      if (protocolo_numero === 1) {
+        // Evaluamos si el biólogo marcó al menos una casilla de parámetros In Situ
+        const inSitu = datos_formulario.parametros_in_situ || {};
+        const inSituLleno = Object.values(inSitu).some(valor => valor === true);
+        const estadoCalculado = inSituLleno ? 2 : 1; // 2 = Verde, 1 = Naranja
+
+        // Actualizamos el documento del proyecto
+        await Biomonitoreo.findByIdAndUpdate(biomonitoreo_id, {
+          $set: { 'estado_protocolos.protocolo1': estadoCalculado }
+        });
+      }
+      
         resultados.push({ protocolo_numero, estado_asignado: estadoFinal, mensaje: 'Creado correctamente' });
       }
     }
