@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener("DOMContentLoaded", function () {
 //Aqui se tienen que cargar dinamicamente y se actualiza el modal según si existe o no el protocolo.
     const protocolos = {
-        1: null, // existe pero especial, cambiar a "protocolo1.html" para ver cambio de modal a página
+        1: "protocolo1.html", // existe pero especial, cambiar a "protocolo1.html" para ver cambio de modal a página
         2: "protocolo2.html",
         3: "protocolo3.html",
         4: "protocolo4.html",
@@ -76,3 +76,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Seleccionamos el panel que contiene a todos los colaboradores
+    const collabPanel = document.querySelector('.visualizer-collab-panel');
+
+    if (collabPanel) {
+        collabPanel.addEventListener('click', function (e) {
+            // 2. Verificamos si el clic fue en el icono de eliminar (el tache)
+            // Buscamos la clase 'createProject-collab-remove' que definiste en el HTML
+            if (e.target.classList.contains('createProject-collab-remove')) {
+                
+                // 3. Confirmación de seguridad (Opcional pero recomendado para el admin)
+                const confirmacion = confirm("¿Estás seguro de que deseas eliminar a este colaborador?");
+                
+                if (confirmacion) {
+                    // 4. Encontramos el contenedor padre del colaborador para eliminarlo
+                    const collabItem = e.target.closest('.visualizer-collab-item');
+                    
+                    if (collabItem) {
+                        // Animación opcional de desvanecimiento antes de remover
+                        collabItem.style.transition = 'opacity 0.3s ease';
+                        collabItem.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            collabItem.remove();
+                            // Aquí podrías añadir una llamada al backend en el futuro
+                            console.log("Colaborador eliminado por el administrador.");
+                        }, 300);
+                    }
+                }
+            }
+        });
+    }
+});
