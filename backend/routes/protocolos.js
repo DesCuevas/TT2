@@ -5,6 +5,8 @@ const Protocolo = require('../models/protocolo');
 const auth = require('../middleware/auth');
 const Biomonitoreo = require('../models/biomonitoreo');
 
+require('dotenv').config(); // <-- CRÍTICO para que process.env funcione
+
 // --- CONFIGURACIÓN DE CLOUDINARY PARA BASE64 ---
 const cloudinary = require('cloudinary').v2;
 cloudinary.config({
