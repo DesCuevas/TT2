@@ -5,6 +5,14 @@ const Protocolo = require('../models/protocolo');
 const auth = require('../middleware/auth');
 const Biomonitoreo = require('../models/biomonitoreo');
 
+// --- CONFIGURACIÓN DE CLOUDINARY PARA BASE64 ---
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
 // --- 1. SINCRONIZAR (CREAR O ACTUALIZAR) PROTOCOLOS ---
 router.post('/sincronizar', auth, async (req, res) => {
   try {
@@ -16,7 +24,37 @@ router.post('/sincronizar', auth, async (req, res) => {
     const resultados = [];
 
     for (const prot of protocolos) {
-      const { biomonitoreo_id, protocolo_numero, datos_formulario, datos_protocolo_5 } = prot;
+      // Usamos 'let' porque vamos a modificar datos_formulario si trae imagen
+      let { biomonitoreo_id, protocolo_numero, datos_formulario, datos_protocolo_5 } = prot;
+
+      // ====================================================================
+      // --- NUEVA MAGIA: INTERCEPTAR FOTO BASE64 Y SUBIR A CLOUDINARY ---
+      // ====================================================================
+      if (datos_formulario && datos_formulario.foto_base64) {
+        try {
+          console.log(`[Protocolo ${protocolo_numero}] Subiendo imagen a Cloudinary...`);
+          
+          // Le decimos a Cloudinary que es un archivo Base64 tipo JPEG/PNG
+          const base64ParaCloudinary = `data:image/jpeg;base64,${datos_formulario.foto_base64}`;
+          
+          // Lo subimos a la carpeta que definiste
+          const uploadRes = await cloudinary.uploader.upload(base64ParaCloudinary, {
+            folder: 'deepbug_fotos_campo' 
+          });
+
+          // Guardamos la URL pública limpia
+          datos_formulario.foto_url = uploadRes.secure_url;
+          
+          // ¡CRÍTICO! Borramos el texto gigante para no explotar la base de datos MongoDB
+          delete datos_formulario.foto_base64;
+          
+          console.log("✅ Imagen subida con éxito:", uploadRes.secure_url);
+        } catch (error) {
+          console.error("❌ Error subiendo la foto a Cloudinary:", error);
+          // Si falla, el código continuará y guardará el formulario, pero sin foto_url
+        }
+      }
+      // ====================================================================
 
       // 1. Buscamos si ESTE usuario ya tenía un borrador para ESTE protocolo
       let miProtocolo = await Protocolo.findOne({
@@ -32,18 +70,16 @@ router.post('/sincronizar', auth, async (req, res) => {
         miProtocolo.fecha_llenado = Date.now();
         await miProtocolo.save();
 
-        // --- NUEVO: AVISARLE AL PROYECTO QUE YA SE LLENÓ EL PROTOCOLO ---
-      if (protocolo_numero === 1) {
-        // Evaluamos si el biólogo marcó al menos una casilla de parámetros In Situ
-        const inSitu = datos_formulario.parametros_in_situ || {};
-        const inSituLleno = Object.values(inSitu).some(valor => valor === true);
-        const estadoCalculado = inSituLleno ? 2 : 1; // 2 = Verde, 1 = Naranja
+        // --- AVISARLE AL PROYECTO QUE YA SE LLENÓ EL PROTOCOLO ---
+        if (protocolo_numero === 1) {
+          const inSitu = datos_formulario.parametros_in_situ || {};
+          const inSituLleno = Object.values(inSitu).some(valor => valor === true);
+          const estadoCalculado = inSituLleno ? 2 : 1; 
 
-        // Actualizamos el documento del proyecto
-        await Biomonitoreo.findByIdAndUpdate(biomonitoreo_id, {
-          $set: { 'estado_protocolos.protocolo1': estadoCalculado }
-        });
-      }
+          await Biomonitoreo.findByIdAndUpdate(biomonitoreo_id, {
+            $set: { 'estado_protocolos.protocolo1': estadoCalculado }
+          });
+        }
         
         resultados.push({ protocolo_numero, estado_asignado: miProtocolo.estado, mensaje: 'Actualizado correctamente' });
       } else {
@@ -67,18 +103,16 @@ router.post('/sincronizar', auth, async (req, res) => {
 
         await nuevoProtocolo.save();
 
-        // --- NUEVO: AVISARLE AL PROYECTO QUE YA SE LLENÓ EL PROTOCOLO ---
-      if (protocolo_numero === 1) {
-        // Evaluamos si el biólogo marcó al menos una casilla de parámetros In Situ
-        const inSitu = datos_formulario.parametros_in_situ || {};
-        const inSituLleno = Object.values(inSitu).some(valor => valor === true);
-        const estadoCalculado = inSituLleno ? 2 : 1; // 2 = Verde, 1 = Naranja
+        // --- AVISARLE AL PROYECTO QUE YA SE LLENÓ EL PROTOCOLO ---
+        if (protocolo_numero === 1) {
+          const inSitu = datos_formulario.parametros_in_situ || {};
+          const inSituLleno = Object.values(inSitu).some(valor => valor === true);
+          const estadoCalculado = inSituLleno ? 2 : 1; 
 
-        // Actualizamos el documento del proyecto
-        await Biomonitoreo.findByIdAndUpdate(biomonitoreo_id, {
-          $set: { 'estado_protocolos.protocolo1': estadoCalculado }
-        });
-      }
+          await Biomonitoreo.findByIdAndUpdate(biomonitoreo_id, {
+            $set: { 'estado_protocolos.protocolo1': estadoCalculado }
+          });
+        }
       
         resultados.push({ protocolo_numero, estado_asignado: estadoFinal, mensaje: 'Creado correctamente' });
       }
@@ -93,16 +127,11 @@ router.post('/sincronizar', auth, async (req, res) => {
 });
 
 // --- 2. OBTENER PROTOCOLOS DE UN PROYECTO (Para el Dashboard Web) ---
-// URL: GET http://localhost:3000/api/protocolos/:biomonitoreo_id
 router.get('/:biomonitoreo_id', auth, async (req, res) => {
   try {
     const { biomonitoreo_id } = req.params;
-
-    // Buscamos todos los protocolos de este proyecto
-    // Populate nos trae los datos del usuario que lo llenó (para mostrar su nombre en la web)
     const protocolos = await Protocolo.find({ biomonitoreo_id })
                                       .populate('usuario_id', 'nombre email');
-
     res.json(protocolos);
   } catch (error) {
     console.error(error);
@@ -111,16 +140,14 @@ router.get('/:biomonitoreo_id', auth, async (req, res) => {
 });
 
 // --- 3. RESOLVER CONFLICTO (Solo Responsables/Administradores) ---
-// URL: PUT http://localhost:3000/api/protocolos/resolver/:id_protocolo
 router.put('/resolver/:id_protocolo', auth, async (req, res) => {
   try {
-    // REGLA: Un colaborador no puede resolver conflictos
     if (req.usuario.rol === 'Colaborador') {
       return res.status(403).json({ mensaje: 'No tienes permisos para resolver conflictos.' });
     }
 
     const { id_protocolo } = req.params;
-    const { accion } = req.body; // 'aprobar' o 'descartar'
+    const { accion } = req.body; 
 
     const protocolo = await Protocolo.findById(id_protocolo);
     if (!protocolo) {
@@ -128,7 +155,6 @@ router.put('/resolver/:id_protocolo', auth, async (req, res) => {
     }
 
     if (accion === 'aprobar') {
-      // 1. Buscamos si había otro protocolo aprobado y lo pasamos a descartado (lo sustituimos)
       await Protocolo.findOneAndUpdate(
         { 
           biomonitoreo_id: protocolo.biomonitoreo_id, 
@@ -138,7 +164,6 @@ router.put('/resolver/:id_protocolo', auth, async (req, res) => {
         { estado: 'descartado' }
       );
 
-      // 2. Aprobamos este
       protocolo.estado = 'aprobado';
       await protocolo.save();
       
@@ -158,7 +183,7 @@ router.put('/resolver/:id_protocolo', auth, async (req, res) => {
   }
 });
 
-// --- NUEVA RUTA: OBTENER MI BORRADOR GUARDADO ---
+// --- 4. OBTENER MI BORRADOR GUARDADO ---
 router.get('/mi-borrador/:biomonitoreo_id/:protocolo_numero', auth, async (req, res) => {
   try {
     const { biomonitoreo_id, protocolo_numero } = req.params;
@@ -167,7 +192,7 @@ router.get('/mi-borrador/:biomonitoreo_id/:protocolo_numero', auth, async (req, 
       protocolo_numero,
       usuario_id: req.usuario.id
     });
-    // Si no hay nada, mandamos un 404 para que la app sepa que está en blanco
+    
     if (!protocolo) return res.status(404).json({ mensaje: 'No hay borrador' });
     
     res.json(protocolo);
