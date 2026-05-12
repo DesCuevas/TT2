@@ -94,7 +94,8 @@ router.get('/', auth, async (req, res) => {
     })
     .populate('zona_id', 'nombre') // Populate nos trae el nombre de la zona, no solo su ID
     .populate('responsable_id', 'nombre') // Trae los nombres de los responsables
-    .populate('colaboradores_id', 'nombre'); // Trae los nombres de los colaboradores
+    .populate('colaboradores_id', 'nombre') // Trae los nombres de los colaboradores
+    .sort({ fecha_creacion: -1 });
 
     res.json(misProyectos);
   } catch (error) {
