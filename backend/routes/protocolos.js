@@ -53,28 +53,36 @@ router.post('/sincronizar', auth, async (req, res) => {
       // ====================================================================
       // --- MAGIA 2: INTERCEPTAR FOTOS DEL CARRITO (Protocolo 5) ---
       // ====================================================================
-      if (datos_protocolo_5 && datos_protocolo_5.carrito) {
-        for (let item of datos_protocolo_5.carrito) {
+      
+      // Buscamos el carrito ya sea que venga en 'datos_formulario' (tu caso actual)
+      // o en 'datos_protocolo_5'
+      const carrito = (datos_formulario && datos_formulario.carrito) || 
+                      (datos_protocolo_5 && datos_protocolo_5.carrito);
+
+      if (carrito && Array.isArray(carrito)) {
+        for (let item of carrito) {
           if (item.foto_base64) {
             try {
               console.log(`[Protocolo 5] Subiendo evidencia de ${item.nombre} a Cloudinary...`);
+              
               const base64ParaCloudinary = `data:image/jpeg;base64,${item.foto_base64}`;
               
               const uploadRes = await cloudinary.uploader.upload(base64ParaCloudinary, {
                 folder: 'deepbug_macroinvertebrados' 
               });
 
+              // Guardamos la URL y borramos el Base64
               item.foto_url = uploadRes.secure_url;
-              delete item.foto_base64; // Limpiamos la BD para que no pese megabytes
+              delete item.foto_base64;
               
-              console.log(`✅ Foto de ${item.nombre} subida con éxito`);
+              console.log(`✅ Foto de ${item.nombre} subida con éxito: ${uploadRes.secure_url}`);
             } catch (error) {
               console.error(`❌ Error subiendo foto de ${item.nombre}:`, error);
             }
           }
         }
       }
-      // ====================================================================<
+      // ====================================================================
 
       // 1. Buscamos si ESTE usuario ya tenía un borrador para ESTE protocolo
       let miProtocolo = await Protocolo.findOne({
