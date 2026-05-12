@@ -26,37 +26,55 @@ router.post('/sincronizar', auth, async (req, res) => {
     const resultados = [];
 
     for (const prot of protocolos) {
-      // Usamos 'let' porque vamos a modificar datos_formulario si trae imagen
+      // Usamos 'let' porque vamos a modificar los datos si traen imágenes
       let { biomonitoreo_id, protocolo_numero, datos_formulario, datos_protocolo_5 } = prot;
 
       // ====================================================================
-      // --- NUEVA MAGIA: INTERCEPTAR FOTO BASE64 Y SUBIR A CLOUDINARY ---
+      // --- MAGIA 1: INTERCEPTAR FOTO GENERAL (Protocolo 2) ---
       // ====================================================================
       if (datos_formulario && datos_formulario.foto_base64) {
         try {
-          console.log(`[Protocolo ${protocolo_numero}] Subiendo imagen a Cloudinary...`);
-          
-          // Le decimos a Cloudinary que es un archivo Base64 tipo JPEG/PNG
+          console.log(`[Protocolo ${protocolo_numero}] Subiendo imagen general a Cloudinary...`);
           const base64ParaCloudinary = `data:image/jpeg;base64,${datos_formulario.foto_base64}`;
           
-          // Lo subimos a la carpeta que definiste
           const uploadRes = await cloudinary.uploader.upload(base64ParaCloudinary, {
             folder: 'deepbug_fotos_campo' 
           });
 
-          // Guardamos la URL pública limpia
           datos_formulario.foto_url = uploadRes.secure_url;
+          delete datos_formulario.foto_base64; // Borramos el texto gigante
           
-          // ¡CRÍTICO! Borramos el texto gigante para no explotar la base de datos MongoDB
-          delete datos_formulario.foto_base64;
-          
-          console.log("✅ Imagen subida con éxito:", uploadRes.secure_url);
+          console.log("✅ Imagen general subida con éxito");
         } catch (error) {
-          console.error("❌ Error subiendo la foto a Cloudinary:", error);
-          // Si falla, el código continuará y guardará el formulario, pero sin foto_url
+          console.error("❌ Error subiendo la foto general:", error);
         }
       }
+
       // ====================================================================
+      // --- MAGIA 2: INTERCEPTAR FOTOS DEL CARRITO (Protocolo 5) ---
+      // ====================================================================
+      if (datos_protocolo_5 && datos_protocolo_5.carrito) {
+        for (let item of datos_protocolo_5.carrito) {
+          if (item.foto_base64) {
+            try {
+              console.log(`[Protocolo 5] Subiendo evidencia de ${item.nombre} a Cloudinary...`);
+              const base64ParaCloudinary = `data:image/jpeg;base64,${item.foto_base64}`;
+              
+              const uploadRes = await cloudinary.uploader.upload(base64ParaCloudinary, {
+                folder: 'deepbug_macroinvertebrados' 
+              });
+
+              item.foto_url = uploadRes.secure_url;
+              delete item.foto_base64; // Limpiamos la BD para que no pese megabytes
+              
+              console.log(`✅ Foto de ${item.nombre} subida con éxito`);
+            } catch (error) {
+              console.error(`❌ Error subiendo foto de ${item.nombre}:`, error);
+            }
+          }
+        }
+      }
+      // ====================================================================<
 
       // 1. Buscamos si ESTE usuario ya tenía un borrador para ESTE protocolo
       let miProtocolo = await Protocolo.findOne({
@@ -66,13 +84,13 @@ router.post('/sincronizar', auth, async (req, res) => {
       });
 
       if (miProtocolo) {
-        // ACTUALIZAMOS EL EXISTENTE (Evita los clones fantasmas)
+        // ACTUALIZAMOS EL EXISTENTE
         miProtocolo.datos_formulario = datos_formulario;
         if(datos_protocolo_5) miProtocolo.datos_protocolo_5 = datos_protocolo_5;
         miProtocolo.fecha_llenado = Date.now();
         await miProtocolo.save();
 
-        // --- AVISARLE AL PROYECTO QUE YA SE LLENÓ EL PROTOCOLO ---
+        // Actualización de estado de protocolos en el proyecto (Protocolo 1)
         if (protocolo_numero === 1) {
           const inSitu = datos_formulario.parametros_in_situ || {};
           const inSituLleno = Object.values(inSitu).some(valor => valor === true);
@@ -85,7 +103,7 @@ router.post('/sincronizar', auth, async (req, res) => {
         
         resultados.push({ protocolo_numero, estado_asignado: miProtocolo.estado, mensaje: 'Actualizado correctamente' });
       } else {
-        // ES NUEVO. Revisamos si alguien MÁS ya lo había aprobado para marcar conflicto
+        // ES NUEVO
         const protocoloAprobado = await Protocolo.findOne({
           biomonitoreo_id,
           protocolo_numero,
@@ -105,7 +123,6 @@ router.post('/sincronizar', auth, async (req, res) => {
 
         await nuevoProtocolo.save();
 
-        // --- AVISARLE AL PROYECTO QUE YA SE LLENÓ EL PROTOCOLO ---
         if (protocolo_numero === 1) {
           const inSitu = datos_formulario.parametros_in_situ || {};
           const inSituLleno = Object.values(inSitu).some(valor => valor === true);
@@ -128,7 +145,7 @@ router.post('/sincronizar', auth, async (req, res) => {
   }
 });
 
-// --- 2. OBTENER PROTOCOLOS DE UN PROYECTO (Para el Dashboard Web) ---
+// --- 2. OBTENER PROTOCOLOS DE UN PROYECTO ---
 router.get('/:biomonitoreo_id', auth, async (req, res) => {
   try {
     const { biomonitoreo_id } = req.params;
@@ -141,7 +158,7 @@ router.get('/:biomonitoreo_id', auth, async (req, res) => {
   }
 });
 
-// --- 3. RESOLVER CONFLICTO (Solo Responsables/Administradores) ---
+// --- 3. RESOLVER CONFLICTO ---
 router.put('/resolver/:id_protocolo', auth, async (req, res) => {
   try {
     if (req.usuario.rol === 'Colaborador') {
