@@ -23,36 +23,32 @@
             
             <h1 class="login-title">Iniciar Sesión</h1>
 
-            <form>
+            <form id="formLogin">
                 <div class="login-input-group text-start">
                     <label class="login-label">Correo:</label>
-                    <input type="email" class="login-input" placeholder="correo.electronico@gmail.com">
+                    <input type="email" id="emailLogin" class="login-input" placeholder="correo.electronico@gmail.com" required>
                 </div>
 
                 <div class="login-input-group text-start position-relative">
                     <label class="login-label">Contraseña:</label>
-                    <input type="password" class="login-input" placeholder=". . . . . . . ."> <!-- Simulación de puntos -->
-                    <!-- <i class="fas fa-eye-slash login-password-toggle"></i> -->
+                    <input type="password" id="passwordLogin" class="login-input" placeholder="Escribe tu contraseña" required>
                 </div>
 
                 <div class="login-checkbox-wrapper">
                     <input type="checkbox" id="rememberMe" class="login-checkbox">
-                    <!-- Hacer que este check si guarde la contraseña o quitarlo -->
-                    <label for="rememberMe" class="login-checkbox-label">Recordar Contraseña</label>
+                    <label for="rememberMe" class="login-checkbox-label">Recordar mi correo</label>
                 </div>
-<!-- cambiar posteriormente a inicio de colaborador || YA NO-->
-                <a type="button" href="inicio.html" class="btn login-btn-primary">Iniciar Sesión</a>
 
+                <button type="submit" class="btn login-btn-primary" style="width: 100%; border: none; cursor: pointer;">Iniciar Sesión</button>
 
                 <p class="login-footer-text">
-                    ¿No te has registrado? <a href="registro.html" class="login-link-register">Registrate</a>
+                    ¿No te has registrado? <a href="registro.html" class="login-link-register">Regístrate</a>
                 </p>
-                <!-- agregar funcionalidad real de olvidar contraseña -->
-                <a href="#" class="login-link-forgot">¿Olvidaste tu contraseña?</a>
-
+                
+                <a href="#" class="login-link-forgot" onclick="alert('Funcionalidad en desarrollo para la versión final.')">¿Olvidaste tu contraseña?</a>
             </form>
         </div>
     </main>
-
+    <script src="login.js"></script>
 </body>
 </html>

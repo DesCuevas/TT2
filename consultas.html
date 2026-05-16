@@ -6,8 +6,6 @@
     <title>Consulta de Proyectos</title>
     <script src="head-loader.js"></script>
     <link rel="stylesheet" href="css/consultas.css">
-
-
 </head>
 <body>
 
@@ -20,24 +18,10 @@
         </div>
         
         <nav class="nav flex-column mt-4">
-
-            <!-- Visible para todos -->
-            <a class="nav-link" href="inicio.html" data-role="admin colaborador">
-                <i class="fas fa-folder"></i> Mis Proyectos
-            </a>
-
-            <a class="nav-link active" href="consultas.html" data-role="admin colaborador">
-                <i class="fas fa-search"></i> Consultas
-            </a>
-
-            <!-- SOLO ADMIN -->
-            <a class="nav-link" href="familias.html" data-role="admin">
-                <i class="fas fa-layer-group"></i> Familias
-            </a>
-
-            <a class="nav-link" href="zonas.html" data-role="admin">
-                <i class="fas fa-map-marked-alt"></i> Zonas
-            </a>
+            <a class="nav-link" href="inicio.html"><i class="fas fa-folder"></i> Mis Proyectos</a>
+            <a class="nav-link" href="consultas.html"><i class="fas fa-search"></i> Consultas</a>
+            <a class="nav-link" href="familias.html" data-role="Responsable"><i class="fas fa-layer-group"></i> Familias</a>
+            <a class="nav-link" href="zonas.html" data-role="Responsable"><i class="fas fa-map-marked-alt"></i> Zonas</a>
         </nav>
     </div>
 
@@ -54,21 +38,25 @@
                         aria-expanded="false"
                     >
                         <i class="fas fa-user-circle fa-lg text-primary"></i>
-                        <span class="fw-bold text-dark">Usuario</span>
+                        <span class="fw-bold text-dark" id="nombreUsuarioTop">Usuario</span>
                         <i class="fas fa-chevron-down text-primary"></i>
                     </button>
 
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="perfil.html"><i class="fas fa-user-edit fa-lg text-primary me-2"></i>Mi perfil</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="login.html"><i class="fas fa-door-closed fa-lg text-primary me-2"></i>Cerrar sesión</a></li>
+                        <li><a class="dropdown-item" href="#" id="btnCerrarSesion"><i class="fas fa-door-closed fa-lg text-primary me-2"></i>Cerrar sesión</a></li>
                     </ul>
-                    </div>
-                <!-- Cambiar para que se actualice el usuario automaticamente y cierre sesion funcional-->
+                </div>
             </div>
         </div>
             <!-- Hacer que la busqueda si funcione -->
         <div class="container-fluid px-4">
+
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+            <div id="mapa-consultas" style="height: 400px; width: 100%; border-radius: 8px; margin-bottom: 20px; z-index: 1;"></div>
 
             <div class="table-info-search-wrapper">
                 <input type="text" class="table-info-search-input" placeholder="Buscar...">

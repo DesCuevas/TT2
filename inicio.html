@@ -19,24 +19,10 @@
         </div>
         
         <nav class="nav flex-column mt-4">
-
-            <!-- Visible para todos -->
-            <a class="nav-link active" href="inicio.html" data-role="admin colaborador">
-                <i class="fas fa-folder"></i> Mis Proyectos
-            </a>
-
-            <a class="nav-link" href="consultas.html" data-role="admin colaborador">
-                <i class="fas fa-search"></i> Consultas
-            </a>
-
-            <!-- SOLO ADMIN -->
-            <a class="nav-link" href="familias.html" data-role="admin">
-                <i class="fas fa-layer-group"></i> Familias
-            </a>
-
-            <a class="nav-link" href="zonas.html" data-role="admin">
-                <i class="fas fa-map-marked-alt"></i> Zonas
-            </a>
+            <a class="nav-link" href="inicio.html"><i class="fas fa-folder"></i> Mis Proyectos</a>
+            <a class="nav-link" href="consultas.html"><i class="fas fa-search"></i> Consultas</a>
+            <a class="nav-link" href="familias.html" data-role="Responsable"><i class="fas fa-layer-group"></i> Familias</a>
+            <a class="nav-link" href="zonas.html" data-role="Responsable"><i class="fas fa-map-marked-alt"></i> Zonas</a>
         </nav>
     </div>
 
@@ -53,14 +39,14 @@
                         aria-expanded="false"
                     >
                         <i class="fas fa-user-circle fa-lg text-primary"></i>
-                        <span class="fw-bold text-dark">Usuario</span>
+                        <span class="fw-bold text-dark" id="nombreUsuarioTop">Usuario</span>
                         <i class="fas fa-chevron-down text-primary"></i>
                     </button>
 
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="perfil.html"><i class="fas fa-user-edit fa-lg text-primary me-2"></i>Mi perfil</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="login.html"><i class="fas fa-door-closed fa-lg text-primary me-2"></i>Cerrar sesión</a></li>
+                        <li><a class="dropdown-item" href="#" id="btnCerrarSesion"><i class="fas fa-door-closed fa-lg text-primary me-2"></i>Cerrar sesión</a></li>
                     </ul>
                     </div>
                 <!-- Cambiar para que se actualice el usuario automaticamente y cierre sesion funcional-->
@@ -75,9 +61,9 @@
         </div>
 
         <div class="container-fluid">
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" id="contenedorProyectos">
                 
-                <div class="col" data-role="admin">
+                <div class="col" data-role="Responsable">
                     <a class="linknuevoproyecto" href="crearproyecto.html">
                         <div class="Nuevo-proyecto"> 
                             <div class="d-flex align-items-center mb-2">
@@ -87,63 +73,8 @@
                         </div>
                     </a>                
                 </div>
-<!-- Hacer que los proyectos se muestren según la bd -->
-                <div class="col">
-                    <div class="project-card">
-                        <div class="d-flex align-items-center mb-2">
-                            <i class="fas fa-file-alt card-icon me-2"></i>
-                            <a class="card-title" href="verproyecto.html">Proyecto Reserva...</a>
-                        </div>
-                        
-                        <div class="info-text">
-                            <strong>Ubicación:</strong><br>
-                            Lorem ipsum dolor sit amet.
-                        </div>
-                        <div class="info-text">
-                            <strong>Fecha:</strong> 10 de Junio 2025
-                        </div>
-
-                        <div class="user-box">
-                            <i class="fas fa-user-circle"></i>
-                            <div>
-                                <p class="user-name">Ursula Morales</p>
-                                <p class="user-role">Director</p>
-                            </div>
-                        </div>
-<!-- agregar funcionalidad de guardar pdf -->
-                        <button class="btn btn-pdf">Guardar PDF</button>
-                    </div>
-                </div>
-
-
-                <div class="col">
-                    <div class="project-card">
-                        <div class="d-flex align-items-center mb-2">
-                            <i class="fas fa-file-alt card-icon me-2"></i>
-                            <a class="card-title" href="verproyecto.html">Proyecto Reserva...</a>
-                        </div>
-                        
-                        <div class="info-text">
-                            <strong>Ubicación:</strong><br>
-                            Lorem ipsum dolor sit amet.
-                        </div>
-                        <div class="info-text">
-                            <strong>Fecha:</strong> 10 de Junio 2025
-                        </div>
-
-                        <div class="user-box">
-                            <i class="fas fa-user-circle"></i>
-                            <div>
-                                <p class="user-name">Ursula Morales</p>
-                                <p class="user-role">Director</p>
-                            </div>
-                        </div>
-<!-- agregar funcionalidad de guardar pdf -->
-                        <button class="btn btn-pdf">Guardar PDF</button>
-                    </div>
-                </div>
                 
-            </div>
+                </div>
         </div>
     </div>
 </div>
@@ -160,10 +91,10 @@
                 <!-- agregar funcion de validar codigo -->
                 <div class="text-start">
                     <label class="index-modal-label">Ingresa el código</label>
-                    <input type="text" class="index-modal-input" placeholder="Codigo"/> <!-- value="codiguito=)" -->
+                    <input type="text" class="index-modal-input" placeholder="Codigo" id="codigoInvitacionInput"/> <!-- value="codiguito=)" -->
                 </div>
 
-                <button type="button" class="index-modal-btn">Ingresar</button>
+                <button type="button" class="index-modal-btn" id="btnUnirseProyecto">Ingresar</button>
                 
             </div>
         </div>
@@ -172,5 +103,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <script src="roles.js"></script>
+<script src="inicio.js"></script>
 </body>
 </html>

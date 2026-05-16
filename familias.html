@@ -18,24 +18,10 @@
         </div>
         
         <nav class="nav flex-column mt-4">
-
-            <!-- Visible para todos -->
-            <a class="nav-link" href="inicio.html" data-role="admin colaborador">
-                <i class="fas fa-folder"></i> Mis Proyectos
-            </a>
-
-            <a class="nav-link" href="consultas.html" data-role="admin colaborador">
-                <i class="fas fa-search"></i> Consultas
-            </a>
-
-            <!-- SOLO ADMIN -->
-            <a class="nav-link active" href="familias.html" data-role="admin">
-                <i class="fas fa-layer-group"></i> Familias
-            </a>
-
-            <a class="nav-link" href="zonas.html" data-role="admin">
-                <i class="fas fa-map-marked-alt"></i> Zonas
-            </a>
+            <a class="nav-link" href="inicio.html"><i class="fas fa-folder"></i> Mis Proyectos</a>
+            <a class="nav-link" href="consultas.html"><i class="fas fa-search"></i> Consultas</a>
+            <a class="nav-link" href="familias.html" data-role="Responsable"><i class="fas fa-layer-group"></i> Familias</a>
+            <a class="nav-link" href="zonas.html" data-role="Responsable"><i class="fas fa-map-marked-alt"></i> Zonas</a>
         </nav>
     </div>
 
@@ -79,39 +65,10 @@
                 <div class="family-col-name">Nombre de la Familia</div>
                 <div class="family-col-orden">Orden</div>
                 <div class="family-col-tamano">Tamaño</div>
-                <div class="family-col-val2">
-                    <!-- Hacer que esta linea se actualice conforme se añadan zonas a la bd y se cambie el valor en tabla dinamicamente-->
-                <label class="family-col-val2">Valor BMWP</label>
-                    <div class="family-header-sub">
-                        <select>
-                            <option>Seleccionar zona...</option>
-                            <option>Sierra Gorda</option>
-                            <option>Tehuacán</option>
-                        </select>
-                    </div>
                 </div>
-            </div>
 
-            <div class="family-table-row">
-                <div class="family-col-name">Ceptarogeneidae</div>
-                <div class="family-col-orden">T</div>
-                <div class="family-col-tamano">3</div>
-                <div class="family-col-val2">5</div>
-            </div>
-
-            <div class="family-table-row">
-                <div class="family-col-name">Hepterogenidae</div>
-                <div class="family-col-orden">T</div>
-                <div class="family-col-tamano">3</div>
-                <div class="family-col-val2">5</div>
-            </div>
-
-            <div class="family-table-row">
-                <div class="family-col-name">Liniodae</div>
-                <div class="family-col-orden">T</div>
-                <div class="family-col-tamano">3</div>
-                <div class="family-col-val2">5</div>
-            </div>        
+            <div id="contenedorFamiliasLista">
+                </div>
 
         </div>
     </div>
@@ -150,25 +107,7 @@
                     <label class="family-modal-label">Descripción:</label>
                     <textarea class="family-modal-textarea" id="new-family-desc" required></textarea>
 
-                    <!-- Nueva sección de BMWP por Zona -->
-                    <h5 class="family-modal-label mb-3">Valores BMWP por Zona:</h5>
-                    <div id="zones-bmwp-inputs">
-                        <!-- Se generan dinámicamente o se ponen fijos según las zonas existentes -->
-                        <div class="row mb-2">
-                            <div class="col-8 d-flex align-items-center"><span class="small fw-bold">Sierra Gorda</span></div>
-                            <div class="col-4">
-                                <input type="number" class="family-modal-input mb-0 zone-value-input" data-zone="Sierra Gorda" placeholder="Valor" required>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-8 d-flex align-items-center"><span class="small fw-bold">Tehuacán</span></div>
-                            <div class="col-4">
-                                <input type="number" class="family-modal-input mb-0 zone-value-input" data-zone="Tehuacán" placeholder="Valor" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="family-btn-submit mt-4">Añadir Familia</button>
+                    <button type="submit" id="btnGuardarFamilia" class="family-btn-submit mt-4">Añadir Familia</button>
                 </form>
             </div>
         </div>

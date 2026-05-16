@@ -1,415 +1,216 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Protocolo 1</title>
-
+    <title>Protocolo 1 - Deep Bug</title>
     <script src="head-loader.js"></script>
     <link rel="stylesheet" href="css/protocolouno.css">
+    <style>
+        .proto-input:disabled { background-color: #f8f9fa; color: #6c757d; border-color: #e9ecef; }
+        .dynamic-container { background-color: #fcfcfc; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+        .table-param-insitu th { font-size: 0.75rem; vertical-align: middle; }
+        .table-param-insitu td { padding: 4px !important; vertical-align: middle; }
+        .param-input-matrix { font-size: 0.75rem; text-align: center; padding: 4px; height: 28px; }
+    </style>
 </head>
+<body class="bg-light">
 
-<body>
-
-    <div class="sidebar d-flex flex-column">
-        <div class="sidebar-brand">
-            <img src="img/logo-png.png" alt="Deep Bug Logo" class="brand-logo">
-            <span class="brand-text">Deep Bug</span>
+    <div class="d-flex">
+        <div class="sidebar d-flex flex-column">
+            <div class="sidebar-brand">
+                <img src="img/logo-png.png" alt="Deep Bug Logo" class="brand-logo">
+                <span class="brand-text">Deep Bug</span>
+            </div>
+            <nav class="nav flex-column mt-4">
+                <a class="nav-link" href="inicio.html"><i class="fas fa-folder"></i> Mis Proyectos</a>
+                <a class="nav-link" href="consultas.html"><i class="fas fa-search"></i> Consultas</a>
+                <a class="nav-link" href="familias.html" data-role="Responsable"><i class="fas fa-layer-group"></i> Familias</a>
+                <a class="nav-link" href="zonas.html" data-role="Responsable"><i class="fas fa-map-marked-alt"></i> Zonas</a>
+            </nav>
         </div>
 
-        <nav class="nav flex-column mt-4">
-            <a class="nav-link" href="inicio.html" data-role="admin colaborador">
-                <i class="fas fa-folder"></i> Mis Proyectos
-            </a>
-            <a class="nav-link" href="consultas.html" data-role="admin colaborador">
-                <i class="fas fa-search"></i> Consultas
-            </a>
-            <a class="nav-link" href="familias.html" data-role="admin">
-                <i class="fas fa-layer-group"></i> Familias
-            </a>
-            <a class="nav-link" href="zonas.html" data-role="admin">
-                <i class="fas fa-map-marked-alt"></i> Zonas
-            </a>
-        </nav>
-    </div>
-
-    <div class="main-content">
-        
-        <div class="top-header">
-            <div>
-                <h4 class="mb-0 text-primary fw-bold">Protocolo 1</h4>
-                <small class="text-primary fw-bold">Plan de monitoreo</small>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-                <div class="dropdown">
-                    <button class="btn d-flex align-items-center gap-2 p-0 border-0 bg-transparent" type="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user-circle fa-lg text-primary"></i>
-                        <span class="fw-bold text-dark">Usuario</span>
-                        <i class="fas fa-chevron-down text-primary"></i>
-                    </button>
-
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="perfil.html"><i
-                                    class="fas fa-user-edit fa-lg text-primary me-2"></i>Mi perfil</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="login.html"><i
-                                    class="fas fa-door-closed fa-lg text-primary me-2"></i>Cerrar sesión</a></li>
-                    </ul>
+        <div class="main-content w-100">
+            <div class="top-header">
+                <div>
+                    <h4 class="mb-0 text-primary fw-bold d-flex align-items-center">
+                        Protocolo 1
+                        <a href="#" id="link-proyecto-top" class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-50 text-decoration-none text-truncate ms-3 d-flex align-items-center gap-1 hover-shadow" style="font-size: 0.55em; max-width: 250px; font-weight: 500; transition: 0.2s;" title="Regresar al Proyecto">
+                            <i class="fas fa-arrow-left"></i> <span id="nombre-proyecto-nav">Cargando...</span>
+                        </a>
+                    </h4>
+                    <small class="text-primary fw-bold" id="estado-texto">Plan de Monitoreo</small>
                 </div>
-                <!-- Cambiar para que se actualice el usuario automaticamente y cierre sesion funcional-->
+                <div class="d-flex align-items-center gap-2">
+                    <span class="fw-bold text-dark" id="nombreUsuarioTop">Usuario</span>
+                </div>
             </div>
-        </div>
 
-        <div class="container-fluid px-4">
-            <div class="row">
-                <div class="col-lg-8">
-                    
-                    <div class="mb-4" data-role="admin">
-                        <button id="btnModificar" class="btn btn-primary-deep rounded-pill px-4 me-2">
-                            <i class="fas fa-edit me-2"></i>Modificar datos
-                        </button>
-                        <button id="btnGuardar" class="btn btn-success-deep rounded-pill px-4 d-none">
-                            <i class="fas fa-save me-2"></i>Guardar cambios
-                        </button>
-                    </div>
-
-                    <div class="accordion" id="protocolOneAccordion">
+            <div class="container-fluid px-4 py-4">
+                <div class="row justify-content-center">
+                    <div class="col-lg-11">
                         
-                        <div class="protocolOne-accordion-item">
-                            <button class="protocolOne-accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMateriales">
-                                <span>Equipos e instrumentos de medición</span>
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                            
-                            <div id="collapseMateriales" class="collapse" data-bs-parent="#protocolOneAccordion">
-                                <div class="protocolOne-accordion-body">
-                                    <div class="checkbox-grid-protocol">
-                                        <label><input type="checkbox" disabled> Verificar adecuación de los embalajes</label>
-                                        <label><input type="checkbox" disabled checked> Limpieza de los equipos</label>
-                                        <label><input type="checkbox" disabled> Verificación metrológica de los instrumentos</label>
-                                        <label><input type="checkbox" disabled checked> Cámara fotográfica</label>
-                                        
-                                        <div class="instrument-row-view">
-                                            <label><input type="checkbox" disabled checked> Llevar Flujómetro</label>
-                                            <label><input type="checkbox" disabled> Patrones de verificación</label>
-                                        </div>
-                                        <div class="instrument-row-view">
-                                            <label><input type="checkbox" disabled> Llevar Termómetro</label>
-                                            <label><input type="checkbox" disabled checked> Patrones de verificación</label>
-                                        </div>
-                                        <div class="instrument-row-view">
-                                            <label><input type="checkbox" disabled checked> Llevar Conductímetro</label>
-                                            <label><input type="checkbox" disabled> Patrones de verificación</label>
-                                        </div>
-                                        <div class="instrument-row-view">
-                                            <label><input type="checkbox" disabled> Llevar Multiparámetros</label>
-                                            <label><input type="checkbox" disabled> Patrones de verificación</label>
-                                        </div>
-                                        <div class="instrument-row-view">
-                                            <label><input type="checkbox" disabled checked> Llevar GPS</label>
-                                            <label><input type="checkbox" disabled checked> Patrones de verificación</label>
-                                        </div>
-                                    </div>
-                                    <div class="mt-3">
-                                        <label class="fw-bold small text-primary">Observaciones:</label>
-                                        <textarea class="form-control protocolOne-observations" rows="3" disabled>El equipo se encuentra en condiciones óptimas. Calibración verificada el día de ayer.</textarea>
-                                    </div>
-                                </div>
+                        <div class="mb-4 d-flex align-items-center justify-content-between">
+                            <div data-role="Responsable">
+                                <button id="btnModificar" class="btn btn-primary rounded-pill px-4 me-2" style="display: none; background-color: #2b5c8f;">
+                                    <i class="fas fa-edit me-2"></i>Modificar datos
+                                </button>
+                                <button id="btnGuardar" class="btn btn-success rounded-pill px-4" style="display: none; background-color: #2ea043;">
+                                    <i class="fas fa-save me-2"></i>Guardar y Sincronizar
+                                </button>
                             </div>
                         </div>
 
-                        <div class="protocolOne-accordion-item">
-                            <button class="protocolOne-accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCampo">
-                                <span>Materiales que lleva a campo</span>
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                            
-                            <div id="collapseCampo" class="collapse" data-bs-parent="#protocolOneAccordion">
-                                <div class="protocolOne-accordion-body">
-                                    <div class="protocolOne-table-header">
-                                        <span class="mat-col-name">Nombre Del Material</span>
-                                        <span class="mat-col-unit">Unidades</span>
-                                    </div>
-                                    <div id="materialTableContainer">
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Red tipo D</span>
-                                            <input type="number" class="mat-input-unit" value="2" disabled>
+                        <form id="form-protocolo1">
+                            <div class="accordion" id="protocolOneAccordion">
+                                
+                                <div class="protocolOne-accordion-item">
+                                    <button class="protocolOne-accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#acc-datos">
+                                        <span><i class="fas fa-business-time me-2"></i> 1. Datos Generales</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <div id="acc-datos" class="collapse show" data-bs-parent="#protocolOneAccordion">
+                                        <div class="protocolOne-accordion-body row g-3">
+                                            <div class="col-md-6"><label class="form-label small fw-bold">Contacto</label><input type="text" class="form-control proto-input" id="dg_contacto" disabled></div>
+                                            <div class="col-md-6"><label class="form-label small fw-bold">Provincia(s)</label><input type="text" class="form-control proto-input" id="dg_provincia" disabled></div>
+                                            <div class="col-md-12"><label class="form-label small fw-bold">Objetivo</label><textarea class="form-control proto-input" id="dg_objetivo" rows="2" disabled></textarea></div>
                                         </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">R. Triangular</span>
-                                            <input type="number" class="mat-input-unit" value="2" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Celular</span>
-                                            <input type="number" class="mat-input-unit" value="2" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Lápices</span>
-                                            <input type="number" class="mat-input-unit" value="2" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Lupas</span>
-                                            <input type="number" class="mat-input-unit" value="2" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Tamices</span>
-                                            <input type="number" class="mat-input-unit" value="2" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Etiquetas</span>
-                                            <input type="number" class="mat-input-unit" value="2" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Guantes</span>
-                                            <input type="number" class="mat-input-unit" value="2" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Mascarillas</span>
-                                            <input type="number" class="mat-input-unit" value="2" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Envases plásticos</span>
-                                            <input type="number" class="mat-input-unit" value="2" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Frascos fisicoq.</span>
-                                            <input type="number" class="mat-input-unit" value="2" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Cinta métrica</span>
-                                            <input type="number" class="mat-input-unit" value="2" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">C. fluorescentes</span>
-                                            <input type="number" class="mat-input-unit" value="2" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Viales de plásticos</span>
-                                            <input type="number" class="mat-input-unit" value="2" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Pilotos indelebles</span>
-                                            <input type="number" class="mat-input-unit" value="2" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Pinzas entomol.</span>
-                                            <input type="number" class="mat-input-unit" value="10" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Bandejas blancas</span>
-                                            <input type="number" class="mat-input-unit" value="10" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Botellas de lavado</span>
-                                            <input type="number" class="mat-input-unit" value="10" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Caja de herramienta</span>
-                                            <input type="number" class="mat-input-unit" value="10" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Tijeras</span>
-                                            <input type="number" class="mat-input-unit" value="10" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Bolsas herméticas</span>
-                                            <input type="number" class="mat-input-unit" value="10" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Tabla anot.</span>
-                                            <input type="number" class="mat-input-unit" value="10" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">Alcohol</span>
-                                            <input type="number" class="mat-input-unit" value="1" disabled>
-                                        </div>
-                                        <div class="protocolOne-table-row">
-                                            <span class="mat-col-name">C. Adhesiva</span>
-                                            <input type="number" class="mat-input-unit" value="10" disabled>
-                                        </div>
-                                    </div>
-
-                                    <div id="othersTableContainer" class="mt-2 border-top pt-2">
-                                        <p class="small fw-bold text-secondary mb-2">Otros materiales:</p>
-                                        <div class="protocolOne-table-row other-item">
-                                            <input type="text" class="mat-input-name-other" value="Cinta adhesiva industrial" disabled>
-                                            <input type="number" class="mat-input-unit" value="1" disabled>
-                                            <button class="btn-remove-other d-none" data-role="admin"><i class="fas fa-minus-circle"></i></button>
-                                        </div>
-                                    </div>
-
-                                    <div class="text-end mt-2" data-role="admin">
-                                        <button type="button" id="btnAddOtherMaterial" class="btn btn-outline-primary btn-sm rounded-pill d-none">
-                                            <i class="fas fa-plus me-1"></i>Agregar otro material
-                                        </button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <div class="protocolOne-accordion-item">
-                            <button class="protocolOne-accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseParametros">
-                                <span>Parámetros a evaluar</span>
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                            
-                            <div id="collapseParametros" class="collapse" data-bs-parent="#protocolOneAccordion">
-                                <div class="protocolOne-accordion-body">
-                                    <div class="table-responsive">
-                                        <table class="table protocolOne-custom-table">
-                                            <thead>
-                                                <tr>
-                                                    <th rowspan="2" class="align-middle">Parámetros</th>
-                                                    <th rowspan="2" class="align-middle">Unidad</th>
-                                                    <th colspan="8" class="text-center">Estaciones de muestreo</th>
-                                                    <th rowspan="2" class="align-middle">Observaciones</th>
-                                                </tr>
-                                                <tr class="station-subheaders">
-                                                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td class="fw-bold">Conductividad</td>
-                                                    <td><input type="text" class="table-input-small" value="µS/cm" disabled></td>
-                                                    <td><input type="text" class="station-input" value="120" disabled></td>
-                                                    <td><input type="text" class="station-input" value="125" disabled></td>
-                                                    <td><input type="text" class="station-input" value="130" disabled></td>
-                                                    <td><input type="text" class="station-input" value="128" disabled></td>
-                                                    <td><input type="text" class="station-input" value="122" disabled></td>
-                                                    <td><input type="text" class="station-input" value="135" disabled></td>
-                                                    <td><input type="text" class="station-input" value="127" disabled></td>
-                                                    <td><input type="text" class="station-input" value="130" disabled></td>
-                                                    <td><textarea class="obs-table-input" disabled>Medición directa en campo.</textarea></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="fw-bold">pH</td>
-                                                    <td><input type="text" class="table-input-small" value="-" disabled></td>
-                                                    <td><input type="text" class="station-input" value="7.2" disabled></td>
-                                                    <td><input type="text" class="station-input" value="7.1" disabled></td>
-                                                    <td><input type="text" class="station-input" value="7.3" disabled></td>
-                                                    <td><input type="text" class="station-input" value="7.2" disabled></td>
-                                                    <td><input type="text" class="station-input" value="7.0" disabled></td>
-                                                    <td><input type="text" class="station-input" value="7.1" disabled></td>
-                                                    <td><input type="text" class="station-input" value="7.2" disabled></td>
-                                                    <td><input type="text" class="station-input" value="7.2" disabled></td>
-                                                    <td><textarea class="obs-table-input" disabled>Electrodo calibrado con buffer.</textarea></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="fw-bold">Temperatura</td>
-                                                    <td><input type="text" class="table-input-small" value="°C" disabled></td>
-                                                    <td><input type="text" class="station-input" value="22.5" disabled></td>
-                                                    <td><input type="text" class="station-input" value="22.3" disabled></td>
-                                                    <td><input type="text" class="station-input" value="22.6" disabled></td>
-                                                    <td><input type="text" class="station-input" value="22.4" disabled></td>
-                                                    <td><input type="text" class="station-input" value="22.1" disabled></td>
-                                                    <td><input type="text" class="station-input" value="22.8" disabled></td>
-                                                    <td><input type="text" class="station-input" value="22.5" disabled></td>
-                                                    <td><input type="text" class="station-input" value="22.4" disabled></td>
-                                                    <td><textarea class="obs-table-input" disabled>Registro inmediato in situ.</textarea></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="fw-bold">Oxígeno disuelto</td>
-                                                    <td><input type="text" class="table-input-small" value="-" disabled></td>
-                                                    <td><input type="text" class="station-input" value="1.5" disabled></td>
-                                                    <td><input type="text" class="station-input" value="0.5" disabled></td>
-                                                    <td><input type="text" class="station-input" value="2.6" disabled></td>
-                                                    <td><input type="text" class="station-input" value="2.4" disabled></td>
-                                                    <td><input type="text" class="station-input" value="2.1" disabled></td>
-                                                    <td><input type="text" class="station-input" value="0.8" disabled></td>
-                                                    <td><input type="text" class="station-input" value="2.5" disabled></td>
-                                                    <td><input type="text" class="station-input" value="1.4" disabled></td>
-                                                    <td><textarea class="obs-table-input" disabled>Registro de oxígeno realizado inmediato in situ.</textarea></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="fw-bold">Salinidad</td>
-                                                    <td><input type="text" class="table-input-small" value="-" disabled></td>
-                                                    <td><input type="text" class="station-input" value="2.5" disabled></td>
-                                                    <td><input type="text" class="station-input" value="2.3" disabled></td>
-                                                    <td><input type="text" class="station-input" value="2.6" disabled></td>
-                                                    <td><input type="text" class="station-input" value="2.4" disabled></td>
-                                                    <td><input type="text" class="station-input" value="2.1" disabled></td>
-                                                    <td><input type="text" class="station-input" value="2.8" disabled></td>
-                                                    <td><input type="text" class="station-input" value="2.5" disabled></td>
-                                                    <td><input type="text" class="station-input" value="2.4" disabled></td>
-                                                    <td><textarea class="obs-table-input" disabled>Registro hecho in situ.</textarea></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="fw-bold">Turbiedad</td>
-                                                    <td><input type="text" class="table-input-small" value="-" disabled></td>
-                                                    <td><input type="text" class="station-input" value="22" disabled></td>
-                                                    <td><input type="text" class="station-input" value="23" disabled></td>
-                                                    <td><input type="text" class="station-input" value="27" disabled></td>
-                                                    <td><input type="text" class="station-input" value="29" disabled></td>
-                                                    <td><input type="text" class="station-input" value="27" disabled></td>
-                                                    <td><input type="text" class="station-input" value="30" disabled></td>
-                                                    <td><input type="text" class="station-input" value="25" disabled></td>
-                                                    <td><input type="text" class="station-input" value="22" disabled></td>
-                                                    <td><textarea class="obs-table-input" disabled>Registro inmediato en sitio.</textarea></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <div class="mt-3 p-3 bg-light rounded border-start border-4 border-warning">
-                                        <p class="mb-0 small text-muted italic">
-                                            <i class="fas fa-info-circle me-2"></i>
-                                            Si no se muestra contenido es porque no se ha realizado aún el llenado inicial mediante la aplicación.
-                                        </p>
+                                <div class="protocolOne-accordion-item mt-2">
+                                    <button class="protocolOne-accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#acc-estaciones">
+                                        <span><i class="fas fa-map-marker-alt me-2"></i> 2. Identificación (Estaciones)</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <div id="acc-estaciones" class="collapse" data-bs-parent="#protocolOneAccordion">
+                                        <div class="protocolOne-accordion-body">
+                                            <div id="contenedor-estaciones"></div>
+                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2 proto-action" id="btn-add-estacion" style="display:none;"><i class="fas fa-plus me-1"></i>Añadir Estación</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
+                                <div class="protocolOne-accordion-item mt-2">
+                                    <button class="protocolOne-accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#acc-parametros">
+                                        <span><i class="fas fa-vial me-2"></i> 3. Parámetros a evaluar (In Situ)</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <div id="acc-parametros" class="collapse" data-bs-parent="#protocolOneAccordion">
+                                        <div class="protocolOne-accordion-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered text-center table-param-insitu mb-0">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th rowspan="2" class="text-start">Parámetro</th>
+                                                            <th rowspan="2">Unidad</th>
+                                                            <th colspan="8">Estaciones de muestreo</th>
+                                                            <th rowspan="2">Observaciones</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tbody-parametros"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="protocolOne-accordion-item mt-2">
+                                    <button class="protocolOne-accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#acc-responsables">
+                                        <span><i class="fas fa-users me-2"></i> 4. Responsables</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <div id="acc-responsables" class="collapse" data-bs-parent="#protocolOneAccordion">
+                                        <div class="protocolOne-accordion-body">
+                                            <label class="form-label fw-bold text-primary mb-2">Técnicos</label>
+                                            <div id="contenedor-tecnicos" class="mb-3"></div>
+                                            <button type="button" class="btn btn-outline-primary btn-sm mb-4 proto-action" id="btn-add-tecnico" style="display:none;"><i class="fas fa-plus me-1"></i>Añadir Técnico</button>
+                                            
+                                            <hr class="mb-4">
+                                            <div class="row g-3">
+                                                <div class="col-md-6"><label class="form-label small fw-bold">Conductor</label><input type="text" class="form-control proto-input" id="resp_conductor" disabled></div>
+                                                <div class="col-md-6"><label class="form-label small fw-bold">Fecha elaboración plan</label><input type="text" class="form-control proto-input" id="resp_fecha" placeholder="DD/MM/YYYY" disabled></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="protocolOne-accordion-item mt-2">
+                                    <button class="protocolOne-accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#acc-materiales">
+                                        <span><i class="fas fa-boxes me-2"></i> 5. Verificación de Materiales</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <div id="acc-materiales" class="collapse" data-bs-parent="#protocolOneAccordion">
+                                        <div class="protocolOne-accordion-body">
+                                            
+                                            <h6 class="fw-bold text-primary mb-3">a) Equipos e instrumentos de medición</h6>
+                                            <div class="row g-3 mb-4">
+                                                <div class="col-12 d-flex align-items-center flex-wrap gap-2">
+                                                    <div class="form-check me-3" style="width: 250px;">
+                                                        <input class="form-check-input proto-input" type="checkbox" id="chk_adecuacion" disabled>
+                                                        <label class="form-check-label small">Verificar adecuación de los embalajes</label>
+                                                    </div>
+                                                    <div class="form-check me-2">
+                                                        <input class="form-check-input proto-input" type="checkbox" id="chk_adecuacion_no" disabled>
+                                                        <label class="form-check-label small text-danger fw-bold">No</label>
+                                                    </div>
+                                                    <input type="text" class="form-control form-control-sm proto-input" style="flex: 1;" id="txt_adecuacion_no" placeholder="Especifique la causa..." disabled>
+                                                </div>
+                                                
+                                                <div class="col-12 d-flex align-items-center flex-wrap gap-2 border-bottom pb-3">
+                                                    <div class="form-check me-3" style="width: 250px;">
+                                                        <input class="form-check-input proto-input" type="checkbox" id="chk_limpieza" disabled>
+                                                        <label class="form-check-label small">Limpieza de los equipos</label>
+                                                    </div>
+                                                    <div class="form-check me-2">
+                                                        <input class="form-check-input proto-input" type="checkbox" id="chk_limpieza_no" disabled>
+                                                        <label class="form-check-label small text-danger fw-bold">No</label>
+                                                    </div>
+                                                    <input type="text" class="form-control form-control-sm proto-input" style="flex: 1;" id="txt_limpieza_no" placeholder="Especifique la causa..." disabled>
+                                                </div>
+
+                                                <div class="col-12 mt-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input proto-input" type="checkbox" id="chk_metrologica" disabled>
+                                                        <label class="form-check-label small fw-bold text-dark">Verificación metrológica de los instrumentos</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12" id="contenedor-equipos-patrones"></div>
+
+                                                <div class="col-12 mt-3">
+                                                    <label class="small fw-bold">Observación:</label>
+                                                    <textarea class="form-control proto-input" id="txt_observacion_equipos" rows="2" disabled></textarea>
+                                                </div>
+                                            </div>
+
+                                            <h6 class="fw-bold text-primary mb-3 border-top pt-3">b) Insumos (Cantidades)</h6>
+                                            <div class="row g-3" id="contenedor-insumos"></div>
+
+                                            <div class="mt-4 p-3 bg-light rounded border">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <h6 class="fw-bold text-dark mb-0">Otros Insumos</h6>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm proto-action" id="btn-add-insumo" style="display:none;"><i class="fas fa-plus me-1"></i>Añadir Insumo</button>
+                                                </div>
+                                                <div class="row g-3" id="contenedor-otros-insumos"></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
                     </div> 
                 </div>
-
-                <div class="col-lg-4">
-                    <h5 class="protocolOne-resp-title">Responsables</h5>
-                    <div class="protocolOne-resp-container">
-                        
-                        <div class="row g-2 mb-3 align-items-end" data-role="admin">
-                            <div class="col">
-                                <label class="small fw-bold">Nombre</label>
-                                <input type="text" id="newRespName" class="form-control form-control-sm rounded-pill">
-                            </div>
-                            <div class="col">
-                                <label class="small fw-bold">Rol</label>
-                                <select id="newRespRole" class="form-select form-select-sm rounded-pill">
-                                    <option>Técnico</option>
-                                    <option>Investigador</option>
-                                    <option>Conductor</option>
-                                </select>
-                            </div>
-                            <div class="col-auto">
-                                <button id="btnAddResp" class="btn btn-primary btn-sm rounded-circle"><i class="fas fa-plus"></i></button>
-                            </div>
-                        </div>
-
-                        <div id="responsablesList">
-                            <div class="protocolOne-resp-card">
-                                <div class="protocolOne-resp-icon"><i class="fas fa-user"></i></div>
-                                <div class="flex-grow-1">
-                                    <p class="protocolOne-resp-name">Miguel Angel Sanchez</p>
-                                    <p class="protocolOne-resp-role">Técnico</p>
-                                </div>
-                                <button class="btn-remove-resp" data-role="admin"><i class="fas fa-times"></i></button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
             </div>
         </div>
     </div>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="roles.js"></script>
 <script src="protocolo1.js"></script>
 </body>
 </html>
