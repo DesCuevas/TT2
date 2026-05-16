@@ -88,4 +88,27 @@ router.post('/:zonaId/familia', [auth, upload.single('imagen')], async (req, res
   }
 });
 
+// --- 3. ELIMINAR UNA ZONA ---
+// URL: DELETE http://localhost:3000/api/zonas/:id
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    // Candado de seguridad: Solo Responsables o Administradores pueden eliminar
+    if (req.usuario.rol === 'Colaborador') {
+      return res.status(403).json({ mensaje: 'No tienes permisos para eliminar zonas.' });
+    }
+
+    const { id } = req.params;
+    const zonaEliminada = await Zona.findByIdAndDelete(id);
+
+    if (!zonaEliminada) {
+      return res.status(404).json({ mensaje: 'Zona no encontrada.' });
+    }
+
+    res.json({ mensaje: 'Zona eliminada correctamente.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al eliminar la zona.' });
+  }
+});
+
 module.exports = router;

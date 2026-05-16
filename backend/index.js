@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth'); // Rutas de autenticación (registr
 const zonasRoutes = require('./routes/zonas'); 
 const biomonitoreosRoutes = require('./routes/biomonitoreos');
 const protocolosRoutes = require('./routes/protocolos');
+const familiasRoutes = require('./routes/familias');
 
 
 const app = express();
@@ -16,6 +17,8 @@ const app = express();
 app.use(cors()); 
 // Permite que el servidor entienda los JSON que le mande la app de Flutter o la Web
 app.use(express.json({ limit: '50mb' })); // Límite alto por si mandamos fotos en base64
+// Para guardar las familias
+app.use('/api/familias', familiasRoutes);
 
 // --- CONEXIÓN A LA BASE DE DATOS (MONGODB) ---
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/deep_bug_db';

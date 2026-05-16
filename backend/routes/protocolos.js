@@ -99,6 +99,7 @@ router.post('/sincronizar', auth, async (req, res) => {
         await miProtocolo.save();
 
         // Actualización de estado de protocolos en el proyecto (Protocolo 1)
+        // Actualización de estado de protocolos en el proyecto (Protocolos 1 y 5)
         if (protocolo_numero === 1) {
           const inSitu = datos_formulario.parametros_in_situ || {};
           const inSituLleno = Object.values(inSitu).some(valor => valor === true);
@@ -107,6 +108,13 @@ router.post('/sincronizar', auth, async (req, res) => {
           await Biomonitoreo.findByIdAndUpdate(biomonitoreo_id, {
             $set: { 'estado_protocolos.protocolo1': estadoCalculado }
           });
+        }
+
+        // AGREGAR ESTA NUEVA CONDICIÓN PARA EL PROTOCOLO 5
+        if (protocolo_numero === 5) {
+            await Biomonitoreo.findByIdAndUpdate(biomonitoreo_id, {
+                $set: { 'estado_protocolos.protocolo5': 2 } // 2 = Completo
+            });
         }
         
         resultados.push({ protocolo_numero, estado_asignado: miProtocolo.estado, mensaje: 'Actualizado correctamente' });

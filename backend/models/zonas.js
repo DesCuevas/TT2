@@ -12,6 +12,8 @@ const familiaSchema = new mongoose.Schema({
 const zonaSchema = new mongoose.Schema({
   nombre: { type: String, required: true },
   descripcion: { type: String },
+  coordenadas: { type: String }, 
+  ubicacion: { type: String },   
   // Ya no necesitamos 'codigo' aquí, porque el código de invitación vive en Biomonitoreo
   catalogo_familias: [familiaSchema] 
 });

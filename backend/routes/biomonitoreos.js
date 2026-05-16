@@ -132,4 +132,128 @@ router.put('/:id/remover-colaborador', auth, async (req, res) => {
   }
 });
 
+// --- 5. OBTENER UN SOLO PROYECTO POR ID ---
+// URL: GET http://localhost:3000/api/biomonitoreos/:id
+router.get('/:id', auth, async (req, res) => {
+  try {
+    const proyecto = await Biomonitoreo.findById(req.params.id)
+      .populate('zona_id', 'nombre catalogo_familias')
+      .populate('responsable_id', 'nombre email')
+      .populate('colaboradores_id', 'nombre email');
+
+    if (!proyecto) {
+      return res.status(404).json({ mensaje: 'Proyecto no encontrado' });
+    }
+
+    res.json(proyecto);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al obtener el proyecto' });
+  }
+});
+
+// --- 6. OBTENER TODOS LOS PROYECTOS PARA CONSULTAS (INCLUYENDO PROPIOS) ---
+// URL: GET http://localhost:3000/api/biomonitoreos/consultas/todos
+router.get('/consultas/todos', auth, async (req, res) => {
+  try {
+    // REMOVEMOS EL FILTRO para traer absolutamente TODOS los proyectos de la base de datos
+    const todosLosProyectos = await Biomonitoreo.find({})
+    .populate('zona_id', 'nombre ubicacion coordenadas') // Traemos las coordenadas y datos de la zona
+    .populate('responsable_id', 'nombre'); // Para mostrar el responsable en la tabla
+
+    const Protocolo = require('../models/protocolo');
+
+    // Buscamos el BMWP (Protocolo 5) para cada uno de los proyectos
+    const proyectosConBMWP = await Promise.all(todosLosProyectos.map(async (proyecto) => {
+      let proyectoObj = proyecto.toObject();
+      proyectoObj.bmwp_total = null; // Por defecto null si no se ha evaluado el protocolo 5
+
+      if (proyecto.estado_protocolos.protocolo5 > 0) {
+        const proto5 = await Protocolo.findOne({ 
+            biomonitoreo_id: proyecto._id, 
+            protocolo_numero: 5 
+        });
+
+        if (proto5 && proto5.datos_protocolo_5) {
+             proyectoObj.bmwp_total = proto5.datos_protocolo_5.sumatoria_total_bmwp;
+        }
+      }
+      return proyectoObj;
+    }));
+
+    res.json(proyectosConBMWP);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al obtener todos los proyectos para consulta' });
+  }
+});
+
+// --- 7. ELIMINAR UN PROYECTO COMPLETO ---
+// URL: DELETE http://localhost:3000/api/biomonitoreos/:id
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const proyecto = await Biomonitoreo.findById(id);
+
+    if (!proyecto) {
+      return res.status(404).json({ mensaje: 'Proyecto no encontrado' });
+    }
+
+    // Seguridad: Verificamos que el que pide eliminar sea el responsable
+    const userIdText = req.usuario.id.toString();
+    const esResponsable = proyecto.responsable_id.some(respId => respId.toString() === userIdText);
+
+    if (!esResponsable) {
+      return res.status(403).json({ mensaje: 'Solo el responsable puede eliminar este proyecto.' });
+    }
+
+    // 1. Eliminamos el proyecto
+    await Biomonitoreo.findByIdAndDelete(id);
+    
+    // 2. Eliminamos todos los protocolos asociados a este proyecto (Limpieza)
+    const Protocolo = require('../models/protocolo'); // Importamos el modelo
+    await Protocolo.deleteMany({ biomonitoreo_id: id });
+
+    res.json({ mensaje: 'Proyecto y protocolos eliminados correctamente.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al eliminar el proyecto' });
+  }
+});
+// --- 8. SALIR DE UN PROYECTO (VOLUNTARIAMENTE) ---
+// URL: PUT http://localhost:3000/api/biomonitoreos/:id/salir
+router.put('/:id/salir', auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const biomonitoreo = await Biomonitoreo.findById(id);
+
+    if (!biomonitoreo) {
+      return res.status(404).json({ mensaje: 'Proyecto no encontrado' });
+    }
+
+    const userIdText = req.usuario.id.toString();
+
+    // Verificamos si realmente es un colaborador
+    const esColaborador = biomonitoreo.colaboradores_id.some(
+      colab => colab.toString() === userIdText
+    );
+
+    if (!esColaborador) {
+      return res.status(400).json({ mensaje: 'No eres colaborador de este proyecto o ya saliste.' });
+    }
+
+    // Lo filtramos de la lista de colaboradores
+    biomonitoreo.colaboradores_id = biomonitoreo.colaboradores_id.filter(
+      colab => colab.toString() !== userIdText
+    );
+
+    await biomonitoreo.save();
+    
+    res.json({ mensaje: 'Has salido del proyecto exitosamente.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al intentar salir del proyecto.' });
+  }
+});
 module.exports = router;
